@@ -1,0 +1,7 @@
+{
+  "name": "handlebars-form-helpers",
+  "version": "0.0.0",
+  "dependencies": {
+    "handlebars.js": "~1.0.0-rc.3"
+  }
+}
