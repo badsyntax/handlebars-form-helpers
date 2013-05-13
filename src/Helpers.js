@@ -6,11 +6,6 @@
 
 (function(Handlebars) {
 
-  /**
-   * Notes:
-   * Expression helpers need to be returned as safe strings via new Handlebars.SafeString()
-   */
-
   function openTag(type, closing, attr) {
     var html = ['<' + type];
     for (var prop in attr) {
@@ -35,6 +30,10 @@
     }
     return obj1;
   }
+
+  /**
+   * Expression helpers need to be returned as safe strings via new Handlebars.SafeString()
+   */
 
   /* {{#form url class="form"}}{{/form}} */
   Handlebars.registerHelper('form', function(url, options) {
