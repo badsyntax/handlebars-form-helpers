@@ -46,11 +46,25 @@ describe('Handlebars form helpers', function() {
           name: 'Richard'
         }
       };
-      var source = '{{input "name" person.name}}';
+      var source = '{{input "firstname" person.name}}';
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<input id="name" value="Richard" type="text" />');
+      expect(html).toBe('<input name="firstname" id="firstname" value="Richard" type="text" />');
+    });
+
+    it('Prevents falsey attributes from being added', function() {
+
+      var data = {
+        person: {
+          name: 'Richard'
+        }
+      };
+      var source = '{{input "firstname" person.name id=false}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="firstname" value="Richard" type="text" />');
     });
   });
 
@@ -72,11 +86,11 @@ describe('Handlebars form helpers', function() {
     it('Generates the button tag with the first argument as the button text', function() {
 
       var data = {};
-      var source = '{{button "Submit form"}}';
+      var source = '{{button "save" "Submit form"}}';
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<button type="button">Submit form</button>');
+      expect(html).toBe('<button name="save" type="button">Submit form</button>');
     });
   });
 
@@ -85,11 +99,11 @@ describe('Handlebars form helpers', function() {
     it('Generates the submit button tag with the first argument as the button text', function() {
 
       var data = {};
-      var source = '{{submit "Submit form"}}';
+      var source = '{{submit "save" "Submit form"}}';
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<button type="submit">Submit form</button>');
+      expect(html).toBe('<button name="save" type="submit">Submit form</button>');
     });
   });
 
@@ -110,7 +124,7 @@ describe('Handlebars form helpers', function() {
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<select id="people"><option value="1">Richard</option><option value="2">John</option></select>');
+      expect(html).toBe('<select id="people" name="people"><option value="1">Richard</option><option value="2">John</option></select>');
     });
 
     it('Generates the select tag with with an option selected', function() {
@@ -129,7 +143,72 @@ describe('Handlebars form helpers', function() {
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<select id="people"><option value="1">Richard</option><option value="2" selected="true">John</option></select>');
+      expect(html).toBe('<select id="people" name="people"><option value="1">Richard</option><option value="2" selected="true">John</option></select>');
+    });
+  });
+
+  describe('Checkbox', function() {
+
+    it('Generates the checkbox tag with the first argument as the name, 2nd as value, 3rd as checked', function() {
+
+      var data = {};
+      var source = '{{checkbox "food[]" "apples" true}}{{checkbox "food[]" "pears" false}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="food[]" type="checkbox" value="apples" checked="true" /><input name="food[]" type="checkbox" value="pears" />');
+    });
+  });
+
+  describe('File', function() {
+
+    it('Generates the file input tag with the first argument as the name', function() {
+
+      var data = {};
+      var source = '{{file "fileupload"}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="fileupload" id="fileupload" type="file" />');
+    });
+  });
+
+  describe('Hidden', function() {
+
+    it('Generates the hidden input tag with the first argument as the name and 2nd as value', function() {
+
+      var data = {};
+      var source = '{{hidden "secret" "key123"}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="secret" id="secret" value="key123" type="hidden" />');
+    });
+  });
+
+  describe('Password', function() {
+
+    it('Generates the password input tag with the first argument as the name and 2nd as value', function() {
+
+      var data = {};
+      var source = '{{password "passwordfield" "dontdothis"}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="passwordfield" id="passwordfield" value="dontdothis" type="password" />');
+    });
+  });
+
+  describe('Textarea', function() {
+
+    it('Generates the textarea tag with the first argument as the name and 2nd as body', function() {
+
+      var data = {};
+      var source = '{{textarea "text" "Here is some text"}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<textarea name="text" id="text">Here is some text</textarea>');
     });
   });
 });
