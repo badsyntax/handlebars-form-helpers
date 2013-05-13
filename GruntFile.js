@@ -28,16 +28,16 @@ module.exports = function(grunt) {
       }
     },
     jasmine: {
-      helpers: {
-        src: [
-          'components/handlebars.js/handlebars.js',
-          'src/Helpers.js'
-        ],
-        options: {
-          specs: 'spec/**/*.Spec.js'
-        }
+      src: [
+        'src/Helpers.js'
+      ],
+      options: {
+        specs: 'spec/**/*.Spec.js',
+        vendor: [
+          'components/handlebars.js/dist/handlebars.js'
+        ]
       }
-    }
+     }
   });
 
   // Load the task plugins
