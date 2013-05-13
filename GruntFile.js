@@ -8,9 +8,7 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: [
-          'src/**/*.js'
-        ],
+        src: ['src/**/*.js'],
         dest: 'dist/handlebars_helpers.js'
       }
     },
@@ -22,35 +20,27 @@ module.exports = function(grunt) {
       ],
       options: {
         globals: {
-          console: true,
-          document: true
+          console: false,
+          document: false
         }
       }
     },
     jasmine: {
-      src: [
-        'src/Helpers.js'
-      ],
+      src: ['src/Helpers.js'],
       options: {
         specs: 'spec/**/*.Spec.js',
-        vendor: [
-          'components/handlebars.js/dist/handlebars.js'
-        ]
+        vendor: ['components/handlebars.js/dist/handlebars.js']
       }
-     }
+    }
   });
 
-  // Load the task plugins
+  // Load the tasks
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
-  // Custom tasks
+  // Register custom tasks
   grunt.registerTask('test', ['jshint', 'jasmine']);
-
-  // Default tasks
-  grunt.registerTask('default', [
-    'test',
-    'uglify'
-  ]);
+  grunt.registerTask('build', ['test', 'uglify']);
+  grunt.registerTask('default', ['build']);
 };

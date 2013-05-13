@@ -1,6 +1,7 @@
 {
   "name": "handlebars-form-helpers",
   "version": "0.0.0",
+  "repository": "https://github.com/badsyntax/handlebars-form-helpers",
   "dependencies": {
     "handlebars.js": "~1.0.0-rc.3"
   }
