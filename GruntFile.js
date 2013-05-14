@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: ['src/**/*.js'],
-        dest: 'dist/handlebars_helpers.js'
+        dest: 'dist/handlebars_helpers.min.js'
       }
     },
     jshint: {

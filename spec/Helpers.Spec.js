@@ -158,6 +158,16 @@ describe('Handlebars form helpers', function() {
 
       expect(html).toBe('<input name="food[]" type="checkbox" value="apples" checked="true" /><input name="food[]" type="checkbox" value="pears" />');
     });
+
+    it('Generates the checkbox tag with an id attribute if the name does not contain the multiple character sequence', function() {
+
+      var data = {};
+      var source = '{{checkbox "food" "apples" true}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="food" type="checkbox" value="apples" checked="true" id="food" />');
+    });
   });
 
   describe('File', function() {

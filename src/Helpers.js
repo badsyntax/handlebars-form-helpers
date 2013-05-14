@@ -125,6 +125,9 @@
     if (checked) {
       attr.checked = checked;
     }
+    if (!/\[\]/.test(name)) {
+      attr.id = name;
+    }
     return new Handlebars.SafeString(createElement(input, false, extend(attr, options.hash)));
   });
 

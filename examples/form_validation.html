@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Handlebars form helpers - Form validation example</title>
+    <script src="../components/handlebars.js/dist/handlebars.js"></script>
+    <script src="../dist/handlebars_helpers.min.js"></script>
+</head>
+<body>
+
+    <div id="form-container"></div>
+
+    <script type="text/html" id="form-template">
+        {{#form url}}
+            <div class="field">
+                {{label 'name' 'Enter your name'}}
+                {{input 'name' person.name}}
+            </div>
+            <div class="field">
+                {{label 'surname' 'Enter your surname'}}
+                {{input 'surname' person.surname}}
+            </div>
+            <div class="field">
+                {{label 'title' 'Your title'}}
+                {{select 'title' titles}}
+            </div>
+            <div class="field">
+                {{checkbox 'employed' 'yes' person.employed}}
+                {{label 'employed' 'Employed?'}}
+            </div>
+            <div class="field">
+                {{submit 'save' 'Save details'}}
+            </div>
+        {{/form}}
+    </script>
+
+    <script>
+    (function() {
+
+        // Template data
+        var data = {
+            titles: [{
+                value: 'mr',
+                text: 'Mr'
+            }, {
+                value: 'mrs',
+                text: 'Mrs'
+            }],
+            // Our model to validate against
+            person: {
+                name: '',
+                surname: '',
+                title: 'Mr'
+            }
+        };
+
+        var source = document.getElementById('form-template').innerHTML;
+        var template = Handlebars.compile(source);
+        var html = template(data);
+
+        document.getElementById('form-container').innerHTML = html;
+    }());
+    </script>
+</body>
+</html>
