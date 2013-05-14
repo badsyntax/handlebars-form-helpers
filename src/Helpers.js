@@ -6,7 +6,8 @@
 
 (function(Handlebars) {
 
-  /* Markup helpers */
+  /* Markup helpers
+  *****************************************/
 
   function openTag(type, closing, attr) {
     var html = ['<' + type];
@@ -27,7 +28,8 @@
     return openTag(type, closing, attr) + (closing ? (contents || '') + closeTag(type) : '');
   }
 
-  /* Object & array helpers */
+  /* Object, array and validation helpers
+   *****************************************/
 
   function extend(obj1, obj2) {
     for (var prop in obj2) {
@@ -47,56 +49,94 @@
     return -1;
   }
 
-  /* Element strings (to help with script compression) */
+  function hasValidationError(value, errors) {
+    return !!(errors || {})[value];
+  }
+
+  function addValidationError(value, errors, options) {
+    options = options || {};
+    if (errors === true || hasValidationError(value, errors)) {
+      var hash = options.hash;
+      hash['class'] = (hash['class'] ? hash['class'] + ' ' : '') + validationErrorClass;
+    }
+    return options;
+  }
+
+  /* Form element strings
+   *****************************************/
+
   var form = 'form', input = 'input', label = 'label', button = 'button',
     submit = 'submit', select = 'select', option = 'option', checkbox = 'checkbox',
     hidden = 'hidden', textarea = 'textarea', password = 'password', file = 'file';
 
-  /* Handlebars helpers */
+  /* Validation strings
+   *****************************************/
+
+  var validationErrorClass = 'validation-error', validationSufffix = '_validation';
+
+  /* Helpers
+   *****************************************/
 
   /* {{#form url class="form"}}{{/form}} */
-  Handlebars.registerHelper(form, function(url, options) {
+  function helperForm(url, options) {
     return createElement(form, true, extend({
       action: url,
       method: 'POST'
     }, options.hash), options.fn(this));
-  });
+  }
+
+  function helperValidationForm(url, errors, options) {
+    return helperForm(url, addValidationError(url, !!errors.length, options));
+  }
 
   /* {{input "firstname" person.name}} */
-  Handlebars.registerHelper(input, function(name, value, options) {
+  function helperInput(name, value, options) {
     return new Handlebars.SafeString(createElement(input, false, extend({
       name: name,
       id: name,
       value: value,
       type: 'text'
     }, options.hash)));
-  });
+  }
+
+  /* {{input_validation "firstname" person.name errors}} */
+  function helperInputValidation(name, value, errors, options) {
+    return helperInput(name, value, addValidationError(name, errors, options));
+  }
 
   /* {{label "name" "Please enter your name"}} */
-  Handlebars.registerHelper(label, function(input, body, options) {
+  function helperLabel(input, body, options) {
     return new Handlebars.SafeString(createElement(label, true, extend({
       'for': input
     }, options.hash), body));
-  });
+  }
+
+  /* {{label_validation "name" "Please enter your name" errors}} */
+  function helperLabelValidation(input, body, errors, options) {
+    return helperLabel(input, body, addValidationError(input, errors, options));
+  }
 
   /* {{button "Submit form"}} */
-  Handlebars.registerHelper(button, function(name, body, options) {
+  function helperButton(name, body, options) {
     return new Handlebars.SafeString(createElement(button, true, extend({
       name: name,
       type: button
     }, options.hash), body));
-  });
+  }
 
   /* {{submit "Submit form"}} */
-  Handlebars.registerHelper(submit, function(name, body, options) {
+  function helperSubmit(name, body, options) {
     return new Handlebars.SafeString(createElement(button, true, extend({
       name: name,
       type: submit
     }, options.hash), body));
-  });
+  }
 
-  /* {{select "people" people}} */
-  Handlebars.registerHelper(select, function(name, items, selected, options) {
+  /*
+  {{select 'title' titles person.title}}
+  {{select 'title' titles selected}}
+  */
+  function helperSelect(name, items, selected, options) {
 
     var optionsHtml = '';
     var attr;
@@ -126,10 +166,15 @@
       id: name,
       name: name
     }, options.hash), optionsHtml));
-  });
+  }
+
+  /* {{select_validation 'title' titles person.title errors}} */
+  function helperSelectValidation(name, items, selected, errors, options) {
+    return helperSelect(name, items, selected, addValidationError(name, errors, options));
+  }
 
   /* {{checkbox "food[]" "apples" true}} */
-  Handlebars.registerHelper(checkbox, function(name, value, checked, options) {
+  function helperCheckbox(name, value, checked, options) {
     var attr = {
       name: name,
       type: checkbox,
@@ -143,43 +188,93 @@
       attr.id = name;
     }
     return new Handlebars.SafeString(createElement(input, false, extend(attr, options.hash)));
-  });
+  }
 
-  /* {{file "fileupload"}}} */
-  Handlebars.registerHelper(file, function(name, options) {
+  /* {{checkbox_validation "food[]" "apples" true errors}} */
+  function helperCheckboxValidation(name, value, checked, errors, options) {
+    return helperCheckbox(name, value, checked, addValidationError(name, errors, options));
+  }
+
+  /* {{file "fileupload"}} */
+  function helperFile(name, options) {
     return new Handlebars.SafeString(createElement(input, false, extend({
       name: name,
       id: name,
       type: file
     }, options.hash)));
-  });
+  }
+
+  /* {{file "fileupload" errors}} */
+  function helperFileValidation(name, errors, options) {
+    return helperFile(name, addValidationError(name, errors, options));
+  }
 
   /* {{hidden "secret" "key123"}} */
-  Handlebars.registerHelper(hidden, function(name, value, options) {
+  function helperHidden(name, value, options) {
     return new Handlebars.SafeString(createElement(input, false, extend({
       name: name,
       id: name,
       value: value,
       type: hidden
     }, options.hash)));
-  });
+  }
 
   /* {{password "password" "dontdothis"}} */
-  Handlebars.registerHelper(password, function(name, value, options) {
+  function helperPassword(name, value, options) {
     return new Handlebars.SafeString(createElement(input, false, extend({
       name: name,
       id: name,
       value: value,
       type: password
     }, options.hash)));
-  });
+  }
+
+  /* {{password_validation "password" "dontdothis" errors}} */
+  function helperPasswordValidation(name, value, errors, options) {
+    return helperPassword(name, value, addValidationError(name, errors));
+  }
 
   /* {{textarea "text" "Here is some text"}} */
-  Handlebars.registerHelper(textarea, function(name, body, options) {
+  function helperTextarea(name, body, options) {
     return new Handlebars.SafeString(createElement(textarea, true, extend({
       name: name,
       id: name
     }, options.hash), body));
-  });
+  }
+
+  /* {{textarea_validation "text" "Here is some text" errors}} */
+  function helperTextareaValidation(name, body, errors, options) {
+    return helperTextarea(name, body, addValidationError(name, errors, options));
+  }
+
+  // Register as Handlebars helpers
+  (function registerHelpers(helpers) {
+    for(var i = 0, j = helpers.length; i < j; i++) {
+      Handlebars.registerHelper(helpers[i][0], helpers[i][1]);
+    }
+  }([
+
+    // Form helpers
+    [form,       helperForm],
+    [input,      helperInput],
+    [label,      helperLabel],
+    [button,     helperButton],
+    [submit,     helperSubmit],
+    [select,     helperSelect],
+    [checkbox,   helperCheckbox],
+    [file,       helperFile],
+    [hidden,     helperHidden],
+    [password,   helperPassword],
+    [textarea,   helperTextarea],
+
+    // Form validation helpers
+    [label+validationSufffix,    helperLabelValidation],
+    [input+validationSufffix,    helperInputValidation],
+    [select+validationSufffix,   helperSelectValidation],
+    [checkbox+validationSufffix, helperCheckboxValidation],
+    [file+validationSufffix,     helperFileValidation],
+    [password+validationSufffix, helperPasswordValidation],
+    [textarea+validationSufffix, helperTextareaValidation]
+  ]));
 
 }(Handlebars));

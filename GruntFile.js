@@ -40,7 +40,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jasmine');
 
   // Register custom tasks
-  grunt.registerTask('test', ['jshint', 'jasmine']);
+  grunt.registerTask('lint', ['jshint']);
+  grunt.registerTask('test', ['lint', 'jasmine']);
   grunt.registerTask('build', ['test', 'uglify']);
   grunt.registerTask('default', ['build']);
 };

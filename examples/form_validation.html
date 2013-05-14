@@ -4,6 +4,15 @@
     <title>Handlebars form helpers - Form validation example</title>
     <script src="../components/handlebars.js/dist/handlebars.js"></script>
     <script src="../src/Helpers.js"></script>
+
+    <style type="text/css">
+    .validation-error {
+        color: red;
+    }
+    input.validation-error {
+        border-color: red;
+    }
+    </style>
 </head>
 <body>
 
@@ -12,20 +21,24 @@
     <script type="text/html" id="form-template">
         {{#form url}}
             <div class="field">
-                {{label 'name' 'Enter your name'}}
-                {{input 'name' person.name}}
+                {{label_validation 'name' 'Enter your name' errors}}
+                {{input_validation 'name' person.name errors}}
             </div>
             <div class="field">
-                {{label 'surname' 'Enter your surname'}}
-                {{input 'surname' person.surname}}
+                {{label_validation 'surname' 'Enter your surname' errors}}
+                {{input_validation 'surname' person.surname errors}}
             </div>
             <div class="field">
-                {{label 'title' 'Your title'}}
-                {{select 'title' titles person.title}}
+                {{label_validation 'title' 'Your title' errors}}
+                {{select_validation 'title' titles person.title errors}}
             </div>
             <div class="field">
-                {{checkbox 'employed' 'yes' person.employed}}
-                {{label 'employed' 'Employed?'}}
+                {{checkbox_validation 'employed' 'yes' person.employed errors}}
+                {{label_validation 'employed' 'Employed?' errors}}
+            </div>
+            <div class="field">
+                {{label_validation 'fileupload' 'Profile picture'}}
+                {{file_validation 'fileupload'}}
             </div>
             <div class="field">
                 {{submit 'save' 'Save details'}}
@@ -38,6 +51,14 @@
 
         // Template data
         var data = {
+            errors: {
+                name: [
+                    'Please enter a name'
+                ],
+                employed: [
+                    'This is an error'
+                ]
+            },
             titles: [{
                 value: 'mrs',
                 text: 'Mrs'
