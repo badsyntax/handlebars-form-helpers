@@ -3,7 +3,7 @@
 <head>
     <title>Handlebars form helpers - Form validation example</title>
     <script src="../components/handlebars.js/dist/handlebars.js"></script>
-    <script src="../dist/handlebars_helpers.min.js"></script>
+    <script src="../src/Helpers.js"></script>
 </head>
 <body>
 
@@ -21,7 +21,7 @@
             </div>
             <div class="field">
                 {{label 'title' 'Your title'}}
-                {{select 'title' titles}}
+                {{select 'title' titles person.title}}
             </div>
             <div class="field">
                 {{checkbox 'employed' 'yes' person.employed}}
@@ -39,17 +39,17 @@
         // Template data
         var data = {
             titles: [{
-                value: 'mr',
-                text: 'Mr'
-            }, {
                 value: 'mrs',
                 text: 'Mrs'
+            }, {
+                value: 'mr',
+                text: 'Mr'
             }],
             // Our model to validate against
             person: {
                 name: '',
                 surname: '',
-                title: 'Mr'
+                title: 'mr'
             }
         };
 

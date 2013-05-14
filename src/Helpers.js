@@ -27,7 +27,7 @@
     return openTag(type, closing, attr) + (closing ? (contents || '') + closeTag(type) : '');
   }
 
-  /* Object helpers */
+  /* Object & array helpers */
 
   function extend(obj1, obj2) {
     for (var prop in obj2) {
@@ -36,6 +36,15 @@
       }
     }
     return obj1;
+  }
+
+  function indexOf(arr, find) {
+    for(var i = 0, j = arr.length; i < j; i++) {
+      if (arr[i] === find) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   /* Element strings (to help with script compression) */
@@ -87,7 +96,7 @@
   });
 
   /* {{select "people" people}} */
-  Handlebars.registerHelper(select, function(name, items, options) {
+  Handlebars.registerHelper(select, function(name, items, selected, options) {
 
     var optionsHtml = '';
     var attr;
@@ -100,10 +109,14 @@
         value: items[i].value
       };
 
-      // Any falsey value will prevent the 'selected' attribute from being added
-      // The 'selected' attribute requires a string value (eg: 'true' or 'false')
-      if (items[i].selected) {
-        attr.selected = items[i].selected;
+      // We can specify which options are selected by using either:
+      // * an array of selected values or
+      // * a single selected value
+      if (
+        (selected instanceof Array && indexOf(selected, items[i].value) !== -1) ||
+        (selected === items[i].value)
+      ) {
+        attr.selected = 'selected';
       }
 
       optionsHtml += createElement(option, true, attr, items[i].text);
@@ -125,6 +138,7 @@
     if (checked) {
       attr.checked = checked;
     }
+    // Don't add an id attribute if the name uses the multiple character sequence, eg: 'food[]'
     if (!/\[\]/.test(name)) {
       attr.id = name;
     }

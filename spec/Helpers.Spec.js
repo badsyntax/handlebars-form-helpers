@@ -120,14 +120,14 @@ describe('Handlebars form helpers', function() {
           text: 'John'
         }]
       };
-      var source = '{{select "people" people}}';
+      var source = '{{select "people" people []}}';
       var template = Handlebars.compile(source);
       var html = template(data);
 
       expect(html).toBe('<select id="people" name="people"><option value="1">Richard</option><option value="2">John</option></select>');
     });
 
-    it('Generates the select tag with with an option selected', function() {
+    it('Generates the select tag with with an option selected using a single selected value', function() {
 
       var data = {
         people: [{
@@ -135,15 +135,34 @@ describe('Handlebars form helpers', function() {
           text: 'Richard'
         }, {
           value: 2,
-          text: 'John',
-          selected: true
-        }]
+          text: 'John'
+        }],
+        selected: 1
       };
-      var source = '{{select "people" people}}';
+      var source = '{{select "people" people selected}}';
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<select id="people" name="people"><option value="1">Richard</option><option value="2" selected="true">John</option></select>');
+      expect(html).toBe('<select id="people" name="people"><option value="1" selected="selected">Richard</option><option value="2">John</option></select>');
+    });
+
+    it('Generates the select tag with with an option selected using an array of selected values', function() {
+
+      var data = {
+        people: [{
+          value: 1,
+          text: 'Richard'
+        }, {
+          value: 2,
+          text: 'John'
+        }],
+        selected: [1]
+      };
+      var source = '{{select "people" people selected}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<select id="people" name="people"><option value="1" selected="selected">Richard</option><option value="2">John</option></select>');
     });
   });
 
