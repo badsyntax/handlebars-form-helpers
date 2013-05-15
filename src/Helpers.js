@@ -53,7 +53,7 @@
     return !!(errors || {})[value];
   }
 
-  function addValidationError(value, errors, options) {
+  function addValidationClass(value, errors, options) {
     options = options || {};
     if (errors === true || hasValidationError(value, errors)) {
       var hash = options.hash;
@@ -72,9 +72,10 @@
   /* Validation strings
    *****************************************/
 
-  var validationErrorClass = 'validation-error', validationSufffix = '_validation';
+  var validationErrorClass = 'validation-error', validationSufffix = '_validation',
+    field_errors = 'field_errors';
 
-  /* Helpers
+  /* Form helpers
    *****************************************/
 
   /* {{#form url class="form"}}{{/form}} */
@@ -86,7 +87,7 @@
   }
 
   function helperValidationForm(url, errors, options) {
-    return helperForm(url, addValidationError(url, !!errors.length, options));
+    return helperForm(url, addValidationClass(url, !!errors.length, options));
   }
 
   /* {{input "firstname" person.name}} */
@@ -101,7 +102,7 @@
 
   /* {{input_validation "firstname" person.name errors}} */
   function helperInputValidation(name, value, errors, options) {
-    return helperInput(name, value, addValidationError(name, errors, options));
+    return helperInput(name, value, addValidationClass(name, errors, options));
   }
 
   /* {{label "name" "Please enter your name"}} */
@@ -113,7 +114,7 @@
 
   /* {{label_validation "name" "Please enter your name" errors}} */
   function helperLabelValidation(input, body, errors, options) {
-    return helperLabel(input, body, addValidationError(input, errors, options));
+    return helperLabel(input, body, addValidationClass(input, errors, options));
   }
 
   /* {{button "Submit form"}} */
@@ -170,7 +171,7 @@
 
   /* {{select_validation 'title' titles person.title errors}} */
   function helperSelectValidation(name, items, selected, errors, options) {
-    return helperSelect(name, items, selected, addValidationError(name, errors, options));
+    return helperSelect(name, items, selected, addValidationClass(name, errors, options));
   }
 
   /* {{checkbox "food[]" "apples" true}} */
@@ -192,7 +193,7 @@
 
   /* {{checkbox_validation "food[]" "apples" true errors}} */
   function helperCheckboxValidation(name, value, checked, errors, options) {
-    return helperCheckbox(name, value, checked, addValidationError(name, errors, options));
+    return helperCheckbox(name, value, checked, addValidationClass(name, errors, options));
   }
 
   /* {{file "fileupload"}} */
@@ -206,7 +207,7 @@
 
   /* {{file "fileupload" errors}} */
   function helperFileValidation(name, errors, options) {
-    return helperFile(name, addValidationError(name, errors, options));
+    return helperFile(name, addValidationClass(name, errors, options));
   }
 
   /* {{hidden "secret" "key123"}} */
@@ -231,7 +232,7 @@
 
   /* {{password_validation "password" "dontdothis" errors}} */
   function helperPasswordValidation(name, value, errors, options) {
-    return helperPassword(name, value, addValidationError(name, errors));
+    return helperPassword(name, value, addValidationClass(name, errors));
   }
 
   /* {{textarea "text" "Here is some text"}} */
@@ -244,10 +245,29 @@
 
   /* {{textarea_validation "text" "Here is some text" errors}} */
   function helperTextareaValidation(name, body, errors, options) {
-    return helperTextarea(name, body, addValidationError(name, errors, options));
+    return helperTextarea(name, body, addValidationClass(name, errors, options));
   }
 
-  // Register as Handlebars helpers
+  /*
+  {{field_errors 'surname' errors class="help-block"}}
+  {{#field_errors 'name' errors}}
+      <span class="help-block">{{this}}</span>
+  {{/field_errors}}
+  */
+  function helperFieldErrors(name, errors, options) {
+    var errMessages = errors[name];
+    if (!errMessages) {
+      return null;
+    }
+    var err = '';
+    for(var i = 0, j = errMessages.length; i < j; i++) {
+      err += options.fn && options.fn(errMessages[i]) ||
+        createElement('div', true, options.hash, errMessages[i]);
+    }
+    return new Handlebars.SafeString(err);
+  }
+
+  // Register the Handlebars helpers
   (function registerHelpers(helpers) {
     for(var i = 0, j = helpers.length; i < j; i++) {
       Handlebars.registerHelper(helpers[i][0], helpers[i][1]);
@@ -274,7 +294,8 @@
     [checkbox+validationSufffix, helperCheckboxValidation],
     [file+validationSufffix,     helperFileValidation],
     [password+validationSufffix, helperPasswordValidation],
-    [textarea+validationSufffix, helperTextareaValidation]
+    [textarea+validationSufffix, helperTextareaValidation],
+    [field_errors,               helperFieldErrors]
   ]));
 
 }(Handlebars));

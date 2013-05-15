@@ -5,43 +5,73 @@
     <script src="../components/handlebars.js/dist/handlebars.js"></script>
     <script src="../src/Helpers.js"></script>
 
+    <link href="../components/bootstrap/docs/assets/css/bootstrap.css" rel="stylesheet" />
+
     <style type="text/css">
-    .validation-error {
-        color: red;
+    body {
+        margin: 20px;
     }
-    input.validation-error {
-        border-color: red;
+    #form-container {
+        width: 500px;
+    }
+    #form-container .validation-error {
+        border-color: #b94a48;
+        color: #b94a48;
     }
     </style>
 </head>
 <body>
 
-    <div id="form-container"></div>
+    <div id="form-container" class="container"></div>
 
     <script type="text/html" id="form-template">
-        {{#form url}}
-            <div class="field">
-                {{label_validation 'name' 'Enter your name' errors}}
-                {{input_validation 'name' person.name errors}}
+        {{#if errors}}
+            <div class="alert alert-error">
+                <strong>Error submitting the form.</strong> Please correct the errors below.
             </div>
-            <div class="field">
-                {{label_validation 'surname' 'Enter your surname' errors}}
-                {{input_validation 'surname' person.surname errors}}
+        {{/if}}
+        {{#form url class="form-horizontal"}}
+            <div class="control-group">
+                {{label_validation 'name' 'Enter your name' errors class="control-label"}}
+                <div class="controls">
+                    {{input_validation 'name' person.name errors}}
+                    {{#field_errors 'name' errors}}
+                        <span class="help-block">{{this}}</span>
+                    {{/field_errors}}
+                </div>
             </div>
-            <div class="field">
-                {{label_validation 'title' 'Your title' errors}}
-                {{select_validation 'title' titles person.title errors}}
+            <div class="control-group">
+                {{label_validation 'surname' 'Enter your surname' errors class="control-label"}}
+                <div class="controls">
+                    {{input_validation 'surname' person.surname errors}}
+                    {{field_errors 'surname' errors class="help-block"}}
+                </div>
             </div>
-            <div class="field">
-                {{checkbox_validation 'employed' 'yes' person.employed errors}}
-                {{label_validation 'employed' 'Employed?' errors}}
+            <div class="control-group">
+                {{label_validation 'title' 'Your title' errors class="control-label"}}
+                <div class="controls">
+                    {{select_validation 'title' titles person.title errors}}
+                    {{field_errors 'title' errors class="text-error"}}
+                </div>
             </div>
-            <div class="field">
-                {{label_validation 'fileupload' 'Profile picture'}}
-                {{file_validation 'fileupload'}}
+            <div class="control-group">
+                <div class="controls checkbox">
+                    {{checkbox_validation 'employed' 'yes' person.employed errors}}
+                    {{label_validation 'employed' 'Employed?' errors}}
+                    {{field_errors 'employed' errors class="text-error"}}
+                </div>
             </div>
-            <div class="field">
-                {{submit 'save' 'Save details'}}
+            <div class="control-group">
+                {{label_validation 'fileupload' 'Profile picture' errors class="control-label"}}
+                <div class="controls">
+                    {{file_validation 'fileupload'}}
+                    {{field_errors 'fileupload' errors class="text-error"}}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="form-actions">
+                    {{submit 'save' 'Save details' class="btn btn-primary"}}
+                </div>
             </div>
         {{/form}}
     </script>
@@ -53,10 +83,10 @@
         var data = {
             errors: {
                 name: [
-                    'Please enter a name'
+                    'Please enter your name'
                 ],
-                employed: [
-                    'This is an error'
+                surname: [
+                    'Please enter your surname'
                 ]
             },
             titles: [{
