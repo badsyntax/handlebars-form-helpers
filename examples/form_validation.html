@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Handlebars form helpers - Form validation example</title>
+    <script src="../components/jquery/jquery.min.js"></script>
     <script src="../components/handlebars.js/dist/handlebars.js"></script>
     <script src="../src/Helpers.js"></script>
 
@@ -25,12 +26,26 @@
     <div id="form-container" class="container"></div>
 
     <script type="text/html" id="form-template">
+
+        {{#unless submitted}}
+            <div class="alert alert-info">Submit the form below to view how the validation helpers work.</div>
+        {{/unless}}
+
+        {{#if submitted}}
+            {{#unless errors}}
+                <div class="alert alert-success">
+                    Form successfully submitted!
+                </div>
+            {{/unless}}
+        {{/if}}
+
         {{#if errors}}
             <div class="alert alert-error">
                 <strong>Error submitting the form.</strong> Please correct the errors below.
             </div>
         {{/if}}
-        {{#form url class="form-horizontal"}}
+
+        {{#form url class="form-horizontal" id="example-form"}}
             <div class="control-group">
                 {{label_validation 'name' 'Enter your name' errors class="control-label"}}
                 <div class="controls">
@@ -79,36 +94,92 @@
     <script>
     (function() {
 
-        // Template data
-        var data = {
-            errors: {
-                name: [
-                    'Please enter your name'
-                ],
-                surname: [
-                    'Please enter your surname'
-                ]
-            },
-            titles: [{
-                value: 'mrs',
-                text: 'Mrs'
-            }, {
-                value: 'mr',
-                text: 'Mr'
-            }],
-            // Our model to validate against
-            person: {
-                name: '',
-                surname: '',
-                title: 'mr'
-            }
+        // Default form data
+        var personModel =  {
+            name: '',
+            surname: '',
+            title: 'mr',
+            employed: false,
+            profilePic: ''
         };
 
-        var source = document.getElementById('form-template').innerHTML;
-        var template = Handlebars.compile(source);
-        var html = template(data);
+        // A list of titles
+        var titles = [{
+            value: 'mrs',
+            text: 'Mrs'
+        }, {
+            value: 'mr',
+            text: 'Mr'
+        }];
 
-        document.getElementById('form-container').innerHTML = html;
+        // Template data
+        var templateData = {
+            errors: false,
+            titles: titles,
+            person: personModel,
+            submitted: false
+        };
+
+        // Pre-compile the template
+        var source = $('#form-template').html();
+        var template = Handlebars.compile(source);
+
+        // Render the template in the DOM
+        function renderTemplate() {
+            $('#form-container').html(template(templateData));
+        }
+
+        function addValidationError(name, error) {
+            if (!templateData.errors) {
+                templateData.errors = {};
+            }
+            if (!templateData.errors[name]) {
+                templateData.errors[name] = [];
+            }
+            templateData.errors[name].push(error);
+        }
+
+        // Dummy validation example
+        function validate(data) {
+
+            // Clear existing errors
+            templateData.errors = false;
+
+            for(var prop in data) {
+                switch(prop) {
+                    case 'name':
+                        if (!$.trim(data[prop])) {
+                            addValidationError(prop, 'Please enter a name');
+                        }
+                    break;
+                    case 'surname':
+                        if (!$.trim(data[prop])) {
+                            addValidationError(prop, 'Please enter a surname');
+                        }
+                    break;
+                }
+            }
+        }
+
+        $('#form-container').on('submit', function(e) {
+
+            e.preventDefault();
+            templateData.submitted = true;
+
+            // Update the model with form data
+            $.each($(e.target).serializeArray(), function(i, field) {
+                personModel[field.name] = field.value;
+            });
+
+            // Validate the model
+            validate(personModel);
+
+            // And finally re-render the template
+            renderTemplate();
+        });
+
+        // Render the template on page load
+        renderTemplate();
     }());
     </script>
 </body>
