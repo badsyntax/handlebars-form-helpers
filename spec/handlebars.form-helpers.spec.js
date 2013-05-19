@@ -66,6 +66,24 @@ describe('Handlebars form helpers', function() {
 
       expect(html).toBe('<input name="firstname" value="Richard" type="text" />');
     });
+
+    it('Adds validation error classes', function() {
+      var data = {
+        errors: {
+          name: [
+            'Please enter a name'
+          ]
+        },
+        person: {
+          name: ''
+        }
+      };
+      var source = '{{input_validation "name" person.name errors}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="name" id="name" type="text" class="validation-error" />');
+    });
   });
 
   describe('Label', function() {
@@ -78,6 +96,25 @@ describe('Handlebars form helpers', function() {
       var html = template(data);
 
       expect(html).toBe('<label for="name">Please enter your name</label>');
+    });
+
+    it('Adds validation error classes', function() {
+
+      var data = {
+        errors: {
+          name: [
+            'Please enter a name'
+          ]
+        },
+        person: {
+          name: ''
+        }
+      };
+      var source = '{{label_validation "name" "Enter your name" errors}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<label for="name" class="validation-error">Enter your name</label>');
     });
   });
 
@@ -164,6 +201,29 @@ describe('Handlebars form helpers', function() {
 
       expect(html).toBe('<select id="people" name="people"><option value="1" selected="selected">Richard</option><option value="2">John</option></select>');
     });
+
+    it('Adds validation error classes', function() {
+
+      var data = {
+         titles: [{
+            value: 'mr',
+            text: 'Mr'
+        }],
+        errors: {
+          title: [
+            'Please enter a Title'
+          ]
+        },
+        person: {
+          title: 'mr'
+        }
+      };
+      var source = '{{select_validation "title" titles person.title errors}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<select id="title" name="title" class="validation-error"><option value="mr" selected="selected">Mr</option></select>');
+    });
   });
 
   describe('Checkbox', function() {
@@ -200,6 +260,23 @@ describe('Handlebars form helpers', function() {
 
       expect(html).toBe('<input name="fileupload" id="fileupload" type="file" />');
     });
+
+    it('Adds validation error classes', function() {
+
+      var data = {
+        errors: {
+          fileupload: [
+            'Please select a file'
+          ]
+        }
+      };
+      var source = '{{file_validation "fileupload" errors}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="fileupload" id="fileupload" type="file" class="validation-error" />');
+    });
+
   });
 
   describe('Hidden', function() {
@@ -226,6 +303,22 @@ describe('Handlebars form helpers', function() {
 
       expect(html).toBe('<input name="passwordfield" id="passwordfield" value="dontdothis" type="password" />');
     });
+
+    it('Adds validation error classes', function() {
+
+      var data = {
+        errors: {
+          password: [
+            'Please enter a password'
+          ]
+        }
+      };
+      var source = '{{password_validation "password" "" errors}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="password" id="password" type="password" class="validation-error" />');
+    });
   });
 
   describe('Textarea', function() {
@@ -238,6 +331,22 @@ describe('Handlebars form helpers', function() {
       var html = template(data);
 
       expect(html).toBe('<textarea name="text" id="text">Here is some text</textarea>');
+    });
+
+    it('Adds validation error classes', function() {
+
+      var data = {
+        errors: {
+          text: [
+            'Please enter some text'
+          ]
+        }
+      };
+      var source = '{{textarea_validation "text" "Here is some text" errors}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<textarea name="text" id="text" class="validation-error">Here is some text</textarea>');
     });
   });
 });

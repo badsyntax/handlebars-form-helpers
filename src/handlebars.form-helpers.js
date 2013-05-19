@@ -86,10 +86,6 @@
     }, options.hash), options.fn(this));
   }
 
-  function helperValidationForm(url, errors, options) {
-    return helperForm(url, addValidationClass(url, !!errors.length, options));
-  }
-
   /* {{input "firstname" person.name}} */
   function helperInput(name, value, options) {
     return new Handlebars.SafeString(createElement(input, false, extend({
@@ -232,7 +228,7 @@
 
   /* {{password_validation "password" "dontdothis" errors}} */
   function helperPasswordValidation(name, value, errors, options) {
-    return helperPassword(name, value, addValidationClass(name, errors));
+    return helperPassword(name, value, addValidationClass(name, errors, options));
   }
 
   /* {{textarea "text" "Here is some text"}} */
