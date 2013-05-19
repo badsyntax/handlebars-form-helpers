@@ -70,6 +70,13 @@
                 </div>
             </div>
             <div class="control-group">
+                {{label_validation 'food' 'Your favourite food' errors class="control-label"}}
+                <div class="controls">
+                    {{select_validation 'food' foods person.food errors}}
+                    {{field_errors 'title' errors class="text-error"}}
+                </div>
+            </div>
+            <div class="control-group">
                 <div class="controls checkbox">
                     {{checkbox_validation 'employed' 'yes' person.employed errors}}
                     {{label_validation 'employed' 'Employed?' errors}}
@@ -100,7 +107,8 @@
             surname: '',
             title: 'mr',
             employed: false,
-            profilePic: ''
+            profilePic: '',
+            food: ['pasta']
         };
 
         // A list of titles
@@ -112,10 +120,20 @@
             text: 'Mr'
         }];
 
+        // A list of foods
+        var foods = [{
+            value: 'pasta',
+            text: 'Pasta'
+        }, {
+            value: 'fruit',
+            text: 'Fruit'
+        }];
+
         // Template data
         var templateData = {
             errors: false,
             titles: titles,
+            foods: foods,
             person: personModel,
             submitted: false
         };
@@ -167,8 +185,18 @@
             templateData.submitted = true;
 
             // Update the model with form data
+            var multiple = [];
             $.each($(e.target).serializeArray(), function(i, field) {
-                personModel[field.name] = field.value;
+                // This field has multiple values, store them in an array
+                if (personModel[field.name] instanceof Array) {
+                    if ($.inArray(field.name, multiple) === -1) {
+                        multiple.push(field.name);
+                        personModel[field.name] = [];
+                    }
+                    personModel[field.name].push(field.value);
+                } else {
+                    personModel[field.name] = field.value;
+                }
             });
 
             // Validate the model

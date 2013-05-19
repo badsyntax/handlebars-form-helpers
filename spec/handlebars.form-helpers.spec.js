@@ -199,7 +199,7 @@ describe('Handlebars form helpers', function() {
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<select id="people" name="people"><option value="1" selected="selected">Richard</option><option value="2">John</option></select>');
+      expect(html).toBe('<select id="people" name="people" multiple="true"><option value="1" selected="selected">Richard</option><option value="2">John</option></select>');
     });
 
     it('Adds validation error classes', function() {

@@ -135,14 +135,18 @@
   */
   function helperSelect(name, items, selected, options) {
 
-    var optionsHtml = '';
-    var attr;
+    // If the selected value is an array, then convert the
+    // select to a multiple select
+    if (selected instanceof Array) {
+      options.hash.multiple = true;
+    }
 
     // Generate the list of options
+    var optionsHtml = '';
     for (var i = 0, j = items.length; i < j; i++) {
 
       // <option> attributes
-      attr = {
+      var attr = {
         value: items[i].value
       };
 
@@ -263,14 +267,14 @@
     return new Handlebars.SafeString(err);
   }
 
-  // Register the Handlebars helpers
-  (function registerHelpers(helpers) {
+  function registerHelpers(helpers) {
     for(var i = 0, j = helpers.length; i < j; i++) {
       Handlebars.registerHelper(helpers[i][0], helpers[i][1]);
     }
-  }([
+  }
 
-    // Form helpers
+  // Form helpers
+  registerHelpers([
     [form,       helperForm],
     [input,      helperInput],
     [label,      helperLabel],
@@ -281,9 +285,11 @@
     [file,       helperFile],
     [hidden,     helperHidden],
     [password,   helperPassword],
-    [textarea,   helperTextarea],
+    [textarea,   helperTextarea]
+  ]);
 
-    // Form validation helpers
+  // Form validation helpers
+  registerHelpers([
     [label+validationSufffix,    helperLabelValidation],
     [input+validationSufffix,    helperInputValidation],
     [select+validationSufffix,   helperSelectValidation],
@@ -292,6 +298,6 @@
     [password+validationSufffix, helperPasswordValidation],
     [textarea+validationSufffix, helperTextareaValidation],
     [field_errors,               helperFieldErrors]
-  ]));
+  ]);
 
 }(Handlebars));
