@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: ['src/**/*.js'],
-        dest: 'dist/handlebars_helpers.min.js'
+        dest: 'dist/handlebars.form-helpers.min.js'
       }
     },
     jshint: {
@@ -26,9 +26,9 @@ module.exports = function(grunt) {
       }
     },
     jasmine: {
-      src: ['src/Helpers.js'],
+      src: ['src/handlebars.form-helpers.js'],
       options: {
-        specs: 'spec/**/*.Spec.js',
+        specs: 'spec/**/*.spec.js',
         vendor: ['components/handlebars.js/dist/handlebars.js']
       }
     }

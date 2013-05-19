@@ -1,5 +1,5 @@
 /**
- * handlebars.js form helpers
+ * handlebars.form-helpers.js
  * https://github.com/badsyntax/handlebars-form-helpers
  * Created by Richard Willis (badsyntax.co)
  */
