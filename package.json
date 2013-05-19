@@ -1,6 +1,10 @@
 {
   "name": "handlebars-form-helpers",
   "version": "0.1.0",
+  "repository": "https://github.com/badsyntax/handlebars-form-helpers",
+  "scripts": {
+    "test": "grunt test --verbose"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-uglify": "~0.1.2rc7",
