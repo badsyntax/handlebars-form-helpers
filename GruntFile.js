@@ -1,11 +1,17 @@
 module.exports = function(grunt) {
 
+  var banner = '/**\n' +
+    ' * handlebars.form-helpers.js - build <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+    ' * https://github.com/badsyntax/handlebars-form-helpers\n' +
+    ' * Copyright (c) 2013 Richard Willis; Licensed MIT\n' +
+    ' */\n';
+
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: banner
       },
       build: {
         src: ['src/**/*.js'],

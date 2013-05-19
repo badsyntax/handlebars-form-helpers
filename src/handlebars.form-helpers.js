@@ -1,7 +1,7 @@
 /**
  * handlebars.form-helpers.js
  * https://github.com/badsyntax/handlebars-form-helpers
- * Created by Richard Willis (badsyntax.co)
+ * Copyright (c) 2013 Richard Willis; Licensed MIT
  */
 
 (function(Handlebars) {
