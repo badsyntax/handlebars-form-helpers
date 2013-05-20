@@ -33,7 +33,7 @@ As with the CommonJS module, the AMD module will need to be initiated manually t
 define the handlebars dependency:
 
 ```javascript
-define('handlebars', 'handlebars.form-helpers', function(handlebars, handlebarsHelpersInit) {
+define(['handlebars', 'handlebars.form-helpers'], function(handlebars, handlebarsHelpersInit) {
   handlebarsHelpersInit(handlebars);
   // etc...
 });
