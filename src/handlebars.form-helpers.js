@@ -273,6 +273,9 @@
     if (!errMessages) {
       return null;
     }
+    if (!(errMessages instanceof Array)) {
+      errMessages = [errMessages];
+    }
     var err = '';
     for(var i = 0, j = errMessages.length; i < j; i++) {
       err += options.fn && options.fn(errMessages[i]) ||
