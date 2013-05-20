@@ -269,17 +269,18 @@
   {{/field_errors}}
   */
   function helperFieldErrors(name, errors, options) {
-    var errMessages = errors[name];
-    if (!errMessages) {
+    errors = errors || {};
+    var fieldErrors = errors[name];
+    if (!fieldErrors) {
       return null;
     }
-    if (!(errMessages instanceof Array)) {
-      errMessages = [errMessages];
+    if (!(fieldErrors instanceof Array)) {
+      fieldErrors = [fieldErrors];
     }
     var err = '';
-    for(var i = 0, j = errMessages.length; i < j; i++) {
-      err += options.fn && options.fn(errMessages[i]) ||
-        createElement('div', true, options.hash, errMessages[i]);
+    for(var i = 0, j = fieldErrors.length; i < j; i++) {
+      err += options.fn && options.fn(fieldErrors[i]) ||
+        createElement('div', true, options.hash, fieldErrors[i]);
     }
     return new Handlebars.SafeString(err);
   }
