@@ -19,6 +19,9 @@
         border-color: #b94a48;
         color: #b94a48;
     }
+    #form-container .help-block.text-error {
+        color: #b94a48;
+    }
     </style>
 </head>
 <body>
@@ -51,7 +54,7 @@
                 <div class="controls">
                     {{input_validation 'name' person.name errors}}
                     {{#field_errors 'name' errors}}
-                        <span class="help-block">{{this}}</span>
+                        <span class="help-block text-error">{{this}}</span>
                     {{/field_errors}}
                 </div>
             </div>
@@ -59,49 +62,49 @@
                 {{label_validation 'surname' 'Enter your surname' errors class="control-label"}}
                 <div class="controls">
                     {{input_validation 'surname' person.surname errors}}
-                    {{field_errors 'surname' errors class="help-block"}}
+                    {{field_errors 'surname' errors class="help-block text-error"}}
                 </div>
             </div>
             <div class="control-group">
                 {{label_validation 'email' 'Enter your email' errors class="control-label"}}
                 <div class="controls">
                     {{input_validation 'email' person.email errors}}
-                    {{field_errors 'email' errors class="help-block"}}
+                    {{field_errors 'email' errors class="help-block text-error"}}
                 </div>
             </div>
             <div class="control-group">
                 {{label_validation 'title' 'Your title' errors class="control-label"}}
                 <div class="controls">
                     {{select_validation 'title' titles person.title errors}}
-                    {{field_errors 'title' errors class="text-error"}}
+                    {{field_errors 'title' errors class="help-block text-error"}}
                 </div>
             </div>
             <div class="control-group">
                 {{label_validation 'food' 'Your favourite food' errors class="control-label"}}
                 <div class="controls">
                     {{select_validation 'food' foods person.food errors}}
-                    {{field_errors 'title' errors class="text-error"}}
+                    {{field_errors 'title' errors class="help-block text-error"}}
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls checkbox">
                     {{checkbox_validation 'employed' 'yes' person.employed errors}}
                     {{label_validation 'employed' 'Employed?' errors}}
-                    {{field_errors 'employed' errors class="text-error"}}
+                    {{field_errors 'employed' errors class="help-block text-error"}}
                 </div>
             </div>
             <div class="control-group">
                 {{label_validation 'fileupload' 'Profile picture' errors class="control-label"}}
                 <div class="controls">
                     {{file_validation 'fileupload'}}
-                    {{field_errors 'fileupload' errors class="text-error"}}
+                    {{field_errors 'fileupload' errors class="help-block text-error"}}
                 </div>
             </div>
             <div class="control-group">
                 {{label_validation 'bio' 'Biography' errors class="control-label"}}
                 <div class="controls">
                     {{textarea_validation 'bio' person.bio}}
-                    {{field_errors 'bio' errors class="text-error"}}
+                    {{field_errors 'bio' errors class="help-block text-error"}}
                 </div>
             </div>
             <div class="control-group">
