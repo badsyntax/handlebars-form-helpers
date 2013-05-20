@@ -4,7 +4,20 @@
  * Copyright (c) 2013 Richard Willis; Licensed MIT
  */
 
-(function(Handlebars) {
+(function (factory) {
+  if (typeof exports === 'object') {
+    // Node/CommonJS
+    exports = module.exports = factory;
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(function() {
+      return factory;
+    });
+  } else {
+    // Browser globals
+    factory(Handlebars);
+  }
+}(function(Handlebars) {
 
   /* Markup helpers
   *****************************************/
@@ -12,7 +25,8 @@
   function openTag(type, closing, attr) {
     var html = ['<' + type];
     for (var prop in attr) {
-      // An attribute needs to be truthy
+      // A falsy value is used to remove the attribute.
+      // EG: attr[false] to remove, attr['false'] to add
       if (attr[prop]) {
         html.push(prop + '="' + attr[prop] + '"');
       }
@@ -273,8 +287,8 @@
     }
   }
 
-  // Form helpers
   registerHelpers([
+    // Form helpers
     [form,       helperForm],
     [input,      helperInput],
     [label,      helperLabel],
@@ -285,11 +299,8 @@
     [file,       helperFile],
     [hidden,     helperHidden],
     [password,   helperPassword],
-    [textarea,   helperTextarea]
-  ]);
-
-  // Form validation helpers
-  registerHelpers([
+    [textarea,   helperTextarea],
+    // Form validation helpers
     [label+validationSufffix,    helperLabelValidation],
     [input+validationSufffix,    helperInputValidation],
     [select+validationSufffix,   helperSelectValidation],
@@ -299,5 +310,4 @@
     [textarea+validationSufffix, helperTextareaValidation],
     [field_errors,               helperFieldErrors]
   ]);
-
-}(Handlebars));
+}));
