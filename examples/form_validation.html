@@ -63,6 +63,13 @@
                 </div>
             </div>
             <div class="control-group">
+                {{label_validation 'email' 'Enter your email' errors class="control-label"}}
+                <div class="controls">
+                    {{input_validation 'email' person.email errors}}
+                    {{field_errors 'email' errors class="help-block"}}
+                </div>
+            </div>
+            <div class="control-group">
                 {{label_validation 'title' 'Your title' errors class="control-label"}}
                 <div class="controls">
                     {{select_validation 'title' titles person.title errors}}
@@ -91,6 +98,13 @@
                 </div>
             </div>
             <div class="control-group">
+                {{label_validation 'bio' 'Biography' errors class="control-label"}}
+                <div class="controls">
+                    {{textarea_validation 'bio' person.bio}}
+                    {{field_errors 'bio' errors class="text-error"}}
+                </div>
+            </div>
+            <div class="control-group">
                 <div class="form-actions">
                     {{submit 'save' 'Save details' class="btn btn-primary"}}
                 </div>
@@ -101,14 +115,18 @@
     <script>
     (function() {
 
+        function Validator(a){this.data=a,this.rules=[]}var Valid=function(){return{notEmpty:function(a){return-1===$.inArray(a,[null,!1,"",[]])},isEmail:function(a){return/^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test(a)}}}();Validator.prototype.rule=function(a,b,c){("string"!=typeof b||(b=Valid[b],void 0!==b))&&this.rules.push({key:a,func:b,message:c})},Validator.prototype.check=function(){var a={};return this.rules.forEach(function(b){var c=b.func(this.data[b.key]);c||void 0!==a[b.key]||(a[b.key]=b.message)}.bind(this)),0!==Object.keys(a).length?a:null};
+
         // Default form data
         var personModel =  {
             name: '',
             surname: '',
+            email: '',
             title: 'mr',
             employed: false,
             profilePic: '',
-            food: ['pasta']
+            food: ['pasta'],
+            bio: ''
         };
 
         // A list of titles
@@ -147,36 +165,15 @@
             $('#form-container').html(template(templateData));
         }
 
-        function addValidationError(name, error) {
-            if (!templateData.errors) {
-                templateData.errors = {};
-            }
-            if (!templateData.errors[name]) {
-                templateData.errors[name] = [];
-            }
-            templateData.errors[name].push(error);
-        }
-
-        // Dummy validation example
         function validate(data) {
-
-            // Clear existing errors
-            templateData.errors = false;
-
-            for(var prop in data) {
-                switch(prop) {
-                    case 'name':
-                        if (!$.trim(data[prop])) {
-                            addValidationError(prop, 'Please enter a name');
-                        }
-                    break;
-                    case 'surname':
-                        if (!$.trim(data[prop])) {
-                            addValidationError(prop, 'Please enter a surname');
-                        }
-                    break;
-                }
-            }
+            var validator = new Validator(data);
+            validator.rule('name', 'notEmpty', 'Name must not be empty');
+            validator.rule('surname', 'notEmpty', 'Surname must not be empty');
+            validator.rule('email', 'notEmpty', 'Email must not be empty');
+            validator.rule('email', 'isEmail', 'Email must be a valid email');
+            validator.rule('message', 'notEmpty', 'Message must not be empty');
+            validator.rule('bio', 'notEmpty', 'Bio must not be empty');
+            templateData.errors = validator.check();
         }
 
         $('#form-container').on('submit', function(e) {
@@ -188,22 +185,24 @@
             var multiple = [];
             $.each($(e.target).serializeArray(), function(i, field) {
                 // This field has multiple values, store them in an array
-                if (personModel[field.name] instanceof Array) {
-                    if ($.inArray(field.name, multiple) === -1) {
-                        multiple.push(field.name);
-                        personModel[field.name] = [];
+                if (personModel[this.name] instanceof Array) {
+                    if ($.inArray(this.name, multiple) === -1) {
+                        multiple.push(this.name);
+                        personModel[this.name] = [];
                     }
-                    personModel[field.name].push(field.value);
+                    personModel[this.name].push(this.value);
                 } else {
-                    personModel[field.name] = field.value;
+                    personModel[this.name] = this.value;
                 }
             });
 
             // Validate the model
             validate(personModel);
 
-            // And finally re-render the template
+            // Re-render the template
             renderTemplate();
+
+            $(window).scrollTop(0);
         });
 
         // Render the template on page load
