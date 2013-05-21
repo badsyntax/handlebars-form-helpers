@@ -98,6 +98,16 @@ describe('Handlebars form helpers', function() {
       expect(html).toBe('<label for="name">Please enter your name</label>');
     });
 
+    it('Block level - Generates the label tag around body', function() {
+
+      var data = {};
+      var source = '{{#label}}Here is a label{{/label}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<label>Here is a label</label>');
+    });
+
     it('Adds validation error classes', function() {
 
       var data = {
@@ -246,6 +256,51 @@ describe('Handlebars form helpers', function() {
       var html = template(data);
 
       expect(html).toBe('<input name="food" type="checkbox" value="apples" checked="true" id="food" />');
+    });
+
+    it('Adds validation error classes', function() {
+
+      var data = {
+        errors: {
+          title: [
+            'Please enter a Title'
+          ]
+        }
+      };
+      var source = '{{checkbox_validation "title" 1 false errors}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="title" type="checkbox" value="1" id="title" class="validation-error" />');
+    });
+  });
+
+  describe('Radio', function() {
+
+    it('Generates radio input tags', function() {
+
+      var data = {};
+      var source = '{{radio "likes_cats" "1" true}}{{radio "likes_cats" "0" false}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="likes_cats" type="radio" value="1" checked="true" /><input name="likes_cats" type="radio" value="0" />');
+    });
+
+    it('Adds validation error classes', function() {
+
+      var data = {
+        errors: {
+          title: [
+            'Please enter a Title'
+          ]
+        }
+      };
+      var source = '{{radio_validation "title" "1" false errors}}{{radio_validation "title" "0" true errors}}';
+      var template = Handlebars.compile(source);
+      var html = template(data);
+
+      expect(html).toBe('<input name="title" type="radio" value="1" class="validation-error" /><input name="title" type="radio" value="0" checked="true" class="validation-error" />');
     });
   });
 

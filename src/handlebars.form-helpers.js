@@ -81,7 +81,8 @@
 
   var form = 'form', input = 'input', label = 'label', button = 'button',
     submit = 'submit', select = 'select', option = 'option', checkbox = 'checkbox',
-    hidden = 'hidden', textarea = 'textarea', password = 'password', file = 'file';
+    radio = 'radio', hidden = 'hidden', textarea = 'textarea', password = 'password',
+    file = 'file';
 
   /* Validation strings
    *****************************************/
@@ -116,10 +117,20 @@
   }
 
   /* {{label "name" "Please enter your name"}} */
+  /* {{#label}}Anything here{{/label}} */
   function helperLabel(input, body, options) {
-    return new Handlebars.SafeString(createElement(label, true, extend({
-      'for': input
-    }, options.hash), body));
+
+    options = Array.prototype.pop.call(arguments);
+    body = options.fn && options.fn(input) || body;
+
+    var attr = {};
+    if (typeof input === 'string') {
+      attr['for'] = input;
+    }
+
+    var element = createElement(label, true, extend(attr, options.hash), body)
+
+    return options.fn ? element : new Handlebars.SafeString(element);
   }
 
   /* {{label_validation "name" "Please enter your name" errors}} */
@@ -208,6 +219,20 @@
   /* {{checkbox_validation "food[]" "apples" true errors}} */
   function helperCheckboxValidation(name, value, checked, errors, options) {
     return helperCheckbox(name, value, checked, addValidationClass(name, errors, options));
+  }
+
+  /* {{radio "likes_cats" "1" true}} */
+  function helperRadio(name, value, checked, options) {
+    extend(options.hash, {
+      type: radio,
+      id: false
+    });
+    return helperCheckbox(name, value, checked, options);
+  }
+
+  /* {{radio_validation "likes_cats" "1" true errors}} */
+  function helperRadioValidation(name, value, checked, errors, options) {
+    return helperRadio(name, value, checked, addValidationClass(name, errors, options));
   }
 
   /* {{file "fileupload"}} */
@@ -300,6 +325,7 @@
     [submit,     helperSubmit],
     [select,     helperSelect],
     [checkbox,   helperCheckbox],
+    [radio,      helperRadio],
     [file,       helperFile],
     [hidden,     helperHidden],
     [password,   helperPassword],
@@ -309,6 +335,7 @@
     [input+validationSufffix,    helperInputValidation],
     [select+validationSufffix,   helperSelectValidation],
     [checkbox+validationSufffix, helperCheckboxValidation],
+    [radio+validationSufffix,    helperRadioValidation],
     [file+validationSufffix,     helperFileValidation],
     [password+validationSufffix, helperPasswordValidation],
     [textarea+validationSufffix, helperTextareaValidation],
