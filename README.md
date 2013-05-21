@@ -82,7 +82,6 @@ Examples:
 ```html
 <label for="name">Please enter your name</label>
 ```
-Or
 ```html
 {{#label}}Please enter your name{{/label}}
 ```
@@ -119,7 +118,7 @@ Or
 <button name="save" type="submit">Submit form</button>
 ```
 
-**Submit button helper**
+**Select helper**
 ```html
 {{select "title" titles title}}
 ```
@@ -132,13 +131,72 @@ Or
   title: 'mr'
 }
 ```
-        
-More usage examples coming soon...
+```html
+<select id="title" name="title"><option value="mr" selected="selected">Mr</option></select>
+```
+
+**Select (multiple) helper**
+```html
+{{select "title" titles selected}}
+```
+```javascript
+{
+  titles: [{
+    value: 'mr',
+    text: 'Mr'
+  }],
+  selected: ['mr']
+}
+```
+```html
+<select id="title" name="title" multiple="true"><option value="mr" selected="selected">Mr</option></select>
+```
+
+**Checkbox helper**
+```html
+{{checkbox "apples" "yes" true}}
+```
+```html
+<input id="apples" name="apples" type="checkbox" value="yes" checked="true" />
+```
+
+**File helper**
+```html
+{{file "fileupload"}}
+```
+```html
+<input name="fileupload" id="fileupload" type="file" />
+```
+
+**Hidden helper**
+```html
+{{hidden "secret" "key123"}}
+```
+```html
+<input name="secret" id="secret" value="key123" type="hidden" />
+```
+
+**Password helper**
+```html
+{{password "password"}}
+```
+```html
+<input name="password" id="password" type="password" />
+```
+
+**Textarea helper**
+```html
+{{textarea "text" "Here is some text"}}
+```
+```html
+<textarea name="text" id="text">Here is some text</textarea>
+```
 
 
 ### Form validation helpers
 
-All validation helpers expect an object of errors to be passed in. 
+Validation helpers work in a similar way to the common form helpers, but expect an additional argument
+to be passed in. This additional argument must be an object, and should contain error messages for the fields.
 
 If the field name exists as a key in the errors, an error class name of 'validation-error' will be added.
 
@@ -147,7 +205,7 @@ If the field name exists as a key in the errors, an error class name of 'validat
 {{label_validation "name" "Please enter your name" errors}}
 {{select_validation "title" titles person.title errors}}
 {{checkbox_validation "food[]" "apples" true errors}}
-{{file "fileupload" errors}}
+{{file_validation "fileupload" errors}}
 {{password_validation "password" "dontdothis" errors}}
 {{textarea_validation "text" "Here is some text" errors}}
 ```
