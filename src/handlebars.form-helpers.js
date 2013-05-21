@@ -128,7 +128,7 @@
       attr['for'] = input;
     }
 
-    var element = createElement(label, true, extend(attr, options.hash), body)
+    var element = createElement(label, true, extend(attr, options.hash), body);
 
     return options.fn ? element : new Handlebars.SafeString(element);
   }
