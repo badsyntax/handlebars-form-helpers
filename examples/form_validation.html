@@ -87,10 +87,26 @@
                 </div>
             </div>
             <div class="control-group">
-                <div class="controls checkbox">
-                    {{checkbox_validation 'employed' 'yes' person.employed errors}}
-                    {{label_validation 'employed' 'Employed?' errors}}
+                <div class="controls">
+                    {{#label}}
+                        {{checkbox_validation 'employed' 'yes' person.employed errors}}
+                        Employed?
+                    {{/label}}
                     {{field_errors 'employed' errors class="help-block text-error"}}
+                </div>
+            </div>
+            <div class="control-group">
+                {{label_validation '' "Do you like cats?" errors class="control-label"}}
+                <div class="controls">
+                    {{#label}}
+                        {{radio_validation 'likes_cats' 'yes' person.likesCats errors}}
+                        Yes
+                    {{/label}}
+                    {{#label}}
+                        {{radio_validation 'likes_cats' 'no' person.likesCats errors}}
+                        No
+                    {{/label}}
+                    {{field_errors 'likes_cats' errors class="help-block text-error"}}
                 </div>
             </div>
             <div class="control-group">
