@@ -64,12 +64,7 @@ Examples:
 
 **Form helper**
 ```html
-{{#form url class="form"}}{{/form}}
-```
-```javascript
-{
-  url: '/contact'
-}
+{{#form "/contact" class="form"}}{{/form}}
 ```
 ```html
 <form method="POST" action="/contact" class="form"></form>
@@ -91,12 +86,7 @@ Examples:
 
 **Input helper**
 ```html
-{{input "firstname" name}}
-```
-```javascript
-{
-  name: 'Richard'
-}
+{{input "firstname" "Richard"}}
 ```
 ```html
 <input type="text" id="firstname" name="firstname" value="Richard" />
