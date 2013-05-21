@@ -46,16 +46,12 @@ define(['handlebars', 'handlebars.form-helpers'], function(handlebars, handlebar
 
 ### Common form helpers
 
-The following helpers will create the associated form elements. The last arguments on every helper are 
-additional element attributes.
-
-
 ```
 {{#form url class="form"}}{{/form}}
 {{label "name" "Please enter your name"}}
 {{input "firstname" person.name}}
-{{button "Submit form"}}
-{{submit "Submit form"}}
+{{button "save" "Submit form"}}
+{{submit "save" "Submit form"}}
 {{select "title" titles person.title}}
 {{checkbox "apples" "yes" true}}
 {{file "fileupload"}}
@@ -63,6 +59,82 @@ additional element attributes.
 {{password "password"}}
 {{textarea "text" "Here is some text"}}
 ```
+
+Examples:
+
+**Form helper**
+```html
+{{#form url class="form"}}{{/form}}
+```
+```javascript
+{
+  url: '/contact'
+}
+```
+```html
+<form method="POST" action="/contact" class="form"></form>
+```
+
+**Label helper**
+```html
+{{label "name" "Please enter your name"}}
+```
+```html
+<label for="name">Please enter your name</label>
+```
+Or
+```html
+{{#label}}Please enter your name{{/label}}
+```
+```html
+<label>Please enter your name</label>
+```
+
+**Input helper**
+```html
+{{input "firstname" name}}
+```
+```javascript
+{
+  name: 'Richard'
+}
+```
+```html
+<input type="text" id="firstname" name="firstname" value="Richard" />
+```
+
+**Button helper**
+```html
+{{button "save" "Submit form"}}
+```
+```html
+<button name="save" type="button">Submit form</button>
+```
+
+**Submit button helper**
+```html
+{{submit "save" "Submit form"}}
+```
+```html
+<button name="save" type="submit">Submit form</button>
+```
+
+**Submit button helper**
+```html
+{{select "title" titles title}}
+```
+```javascript
+{
+  titles: [{
+    value: 'mr',
+    text: 'Mr'
+  }],
+  title: 'mr'
+}
+```
+        
+More usage examples coming soon...
+
 
 ### Form validation helpers
 
