@@ -17,35 +17,67 @@ Load the scripts into your page, ensure you load the form helpers after handleba
 <script src="handlebars.js"></script>
 <script src="handlebars.form-helpers.js"></script>
 ```
+Then register the helpers:
+
+```javascript
+Handlebars.formHelpers.register();
+```
 
 ### Node/CommonJS
 
-When loaded as a CommonJS module, the library will need to be initiated manually. This is a feature
-that allows you to define the handlebars dependency:
+You need to initiate the CommonJS module manually (which allows you to define the handlebars
+dependency), as well as register the helpers:
 
 ```javascript
 var hbs = require('hbs');
-require('./handlebars.form-helpers')(hbs.handlebars);
+var formHelpers = require('./handlebars.form-helpers')(hbs.handlebars);
+formHelpers.register(); // this is required
 ```
 
 ### AMD
 
-As with the CommonJS module, the AMD module will need to be initiated manually to allow you 
-define the handlebars dependency:
+As with the CommonJS module, you need to initiate the AMD module manually, as well as register the helpers:
 
 ```javascript
 define(['handlebars', 'handlebars.form-helpers'], function(handlebars, handlebarsHelpersInit) {
-  handlebarsHelpersInit(handlebars);
+  var formHelpers = handlebarsHelpersInit(handlebars);
+  formHelpers.register(); // this is required
   // etc...
 });
 ```
 
 ## Usage
 
-You need to register the helpers before you can start using them, eg:
+Most of the helpers can be used inline, for example: 
+
+```
+{{label "name" "Please enter your name"}}
+```
+
+The only block helpers are the form and field_errors helpers: 
+
+```
+{{#form "/post" class="form"}}{{/form}}
+{{#field_errors "surname" errors}}
+    <span class="help-block">{{this}}</span>
+{{/field_errors}}`
+```
+
+By default the helpers are registered without a namespace. This gives you nice and friendly helper names. If you need to 
+change the helpers namespace (because helper names are conflicting with template data vars), then you can use
+the `namespace()` public API method to set a custom namespace, for example:
+
 ```javascript
+Handlebars.formHelpers.namespace('myform'); // set the namespace before registering
 Handlebars.formHelpers.register();
 ```
+
+Now the helpers are created with that namespace, for example: 
+
+```
+{{myform-label "name" "Please enter your name"}}
+```
+
 
 ### Common form helpers
 
