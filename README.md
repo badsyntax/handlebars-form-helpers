@@ -65,7 +65,7 @@ The only block helpers are the form and field_errors helpers:
 
 By default the helpers are registered without a namespace. This gives you nice and friendly helper names. If you need to 
 change the helpers namespace (because helper names are conflicting with template data vars), then you can use
-the `namespace()` public API method to set a custom namespace, before registering helpers, for example:
+the `namespace()` public API method to set a custom namespace, before registering the helpers, for example:
 
 ```javascript
 Handlebars.formHelpers.namespace('myform'); // set the namespace before registering
