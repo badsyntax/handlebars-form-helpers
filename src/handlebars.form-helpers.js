@@ -294,19 +294,21 @@
   {{/field_errors}}
   */
   function helperFieldErrors(name, errors, options) {
-    errors = errors || {};
-    var fieldErrors = errors[name];
+
+    var fieldErrors = (errors || {})[name];
     if (!fieldErrors) {
       return null;
     }
     if (!(fieldErrors instanceof Array)) {
       fieldErrors = [fieldErrors];
     }
+
     var err = '';
     for(var i = 0, j = fieldErrors.length; i < j; i++) {
       err += options.fn && options.fn(fieldErrors[i]) ||
         createElement('div', true, options.hash, fieldErrors[i]);
     }
+
     return new Handlebars.SafeString(err);
   }
 
