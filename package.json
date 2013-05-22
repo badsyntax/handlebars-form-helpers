@@ -1,7 +1,18 @@
 {
   "name": "handlebars-form-helpers",
   "version": "0.1.0",
-  "repository": "https://github.com/badsyntax/handlebars-form-helpers",
+  "homepage": "https://github.com/badsyntax/handlebars-form-helpers",
+  "keywords": [
+    "handlebars helpers form"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/badsyntax/handlebars-form-helpers.git"
+  },
+  "engines": {
+    "node": ">=0.4.7"
+  },
+  "main": "src/handlebars.form-helpers.js",
   "scripts": {
     "test": "grunt test --verbose"
   },
