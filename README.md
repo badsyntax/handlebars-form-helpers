@@ -3,46 +3,81 @@
 [![Build Status](https://travis-ci.org/badsyntax/handlebars-form-helpers.png?branch=master)](https://travis-ci.org/badsyntax/handlebars-form-helpers)
 [![Dependency Status](https://gemnasium.com/badsyntax/handlebars-form-helpers.png)](https://gemnasium.com/badsyntax/handlebars-form-helpers)
 
-
-This library provides extra handlebars helpers that can help with building forms. 
-
-Construction of forms can sometimes be tricky and usually there's logic involved. 
-These helpers provide the logic for building forms and handling validation errors. 
+This library provides handlebars helpers that help with building forms and handling validation errors. 
 
 ## Installation
 
 ### Browser
 
-Simply ensure you load the form helpers after you have loaded handlebars:
+Either [download](https://raw.github.com/badsyntax/handlebars-form-helpers/master/dist/handlebars.form-helpers.min.js) the 
+script, or install with [bower](http://bower.io/): `bower install handlebars-form-helpers`
 
+Load the scripts into your page, ensure you load the form helpers after handlebars:
 ```html
 <script src="handlebars.js"></script>
 <script src="handlebars.form-helpers.js"></script>
 ```
+Then register the helpers:
+
+```javascript
+Handlebars.formHelpers.register();
+```
 
 ### Node/CommonJS
 
-When loaded as a CommonJS module, the library will need to be initiated manually. This is a feature
-that allows you to define the handlebars dependency:
+You need to initiate the CommonJS module manually (which allows you to define the handlebars
+dependency), as well as register the helpers:
 
 ```javascript
 var hbs = require('hbs');
-require('./handlebars.form-helpers')(hbs.handlebars);
+var formHelpers = require('./handlebars.form-helpers')(hbs.handlebars);
+formHelpers.register(); // this is required
 ```
 
 ### AMD
 
-As with the CommonJS module, the AMD module will need to be initiated manually to allow you 
-define the handlebars dependency:
+As with the CommonJS module, you need to initiate the AMD module manually, as well as register the helpers:
 
 ```javascript
 define(['handlebars', 'handlebars.form-helpers'], function(handlebars, handlebarsHelpersInit) {
-  handlebarsHelpersInit(handlebars);
+  var formHelpers = handlebarsHelpersInit(handlebars);
+  formHelpers.register(); // this is required
   // etc...
 });
 ```
 
 ## Usage
+
+Most of the helpers can be used inline, for example: 
+
+```
+{{label "name" "Please enter your name"}}
+```
+
+The only block helpers are the form and field_errors helpers: 
+
+```
+{{#form "/post" class="form"}}{{/form}}
+{{#field_errors "surname" errors}}
+    <span class="help-block">{{this}}</span>
+{{/field_errors}}`
+```
+
+By default the helpers are registered without a namespace. This gives you nice and friendly helper names. If you need to 
+change the helpers namespace (because helper names are conflicting with template data vars), then you can use
+the `namespace()` public API method to set a custom namespace, before registering the helpers, for example:
+
+```javascript
+Handlebars.formHelpers.namespace('myform'); // set the namespace before registering
+Handlebars.formHelpers.register();
+```
+
+Now the helpers are created with that namespace, for example: 
+
+```
+{{myform-label "name" "Please enter your name"}}
+```
+
 
 ### Common form helpers
 
