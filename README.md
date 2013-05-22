@@ -25,13 +25,14 @@ Handlebars.formHelpers.register();
 
 ### Node/CommonJS
 
+You can install the helpers with npm: `npm install handlebars-form-helpers`
+
 You need to initiate the CommonJS module manually (which allows you to define the handlebars
 dependency), as well as register the helpers:
 
 ```javascript
 var hbs = require('hbs');
-var formHelpers = require('./handlebars.form-helpers')(hbs.handlebars);
-formHelpers.register(); // this is required
+require('handlebars-form-helpers')(hbs.handlebars).register();
 ```
 
 ### AMD
@@ -39,10 +40,9 @@ formHelpers.register(); // this is required
 As with the CommonJS module, you need to initiate the AMD module manually, as well as register the helpers:
 
 ```javascript
-define(['handlebars', 'handlebars.form-helpers'], function(handlebars, handlebarsHelpersInit) {
-  var formHelpers = handlebarsHelpersInit(handlebars);
-  formHelpers.register(); // this is required
-  // etc...
+define(['handlebars', 'handlebars-form-helpers'], function(handlebars, handlebarsHelpersInit) {
+  handlebarsHelpersInit(handlebars).register()''
+  // ..etc
 });
 ```
 
