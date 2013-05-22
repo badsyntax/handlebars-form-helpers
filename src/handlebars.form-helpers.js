@@ -15,9 +15,18 @@
     });
   } else {
     // Browser globals
-    factory(Handlebars);
+    Handlebars.formHelpers = factory(Handlebars);
   }
 }(function(Handlebars) {
+
+  /* Common vars
+  *****************************************/
+  var ns = '', form = 'form', input = 'input', label = 'label',
+    button = 'button', submit = 'submit', select = 'select', option = 'option',
+    checkbox = 'checkbox', radio = 'radio', hidden = 'hidden',
+    textarea = 'textarea', password = 'password', file = 'file',
+    validationErrorClass = 'validation-error', validationSufffix = '_validation',
+    field_errors = 'field_errors';
 
   /* Markup helpers
   *****************************************/
@@ -75,20 +84,6 @@
     }
     return options;
   }
-
-  /* Form element strings
-   *****************************************/
-
-  var form = 'form', input = 'input', label = 'label', button = 'button',
-    submit = 'submit', select = 'select', option = 'option', checkbox = 'checkbox',
-    radio = 'radio', hidden = 'hidden', textarea = 'textarea', password = 'password',
-    file = 'file';
-
-  /* Validation strings
-   *****************************************/
-
-  var validationErrorClass = 'validation-error', validationSufffix = '_validation',
-    field_errors = 'field_errors';
 
   /* Form helpers
    *****************************************/
@@ -312,35 +307,53 @@
     return new Handlebars.SafeString(err);
   }
 
+  // Register an array of handlebars helpers
   function registerHelpers(helpers) {
     for(var i = 0, j = helpers.length; i < j; i++) {
-      Handlebars.registerHelper(helpers[i][0], helpers[i][1]);
+      Handlebars.registerHelper(ns + helpers[i][0], helpers[i][1]);
     }
   }
 
-  registerHelpers([
-    // Form helpers
-    [form,       helperForm],
-    [input,      helperInput],
-    [label,      helperLabel],
-    [button,     helperButton],
-    [submit,     helperSubmit],
-    [select,     helperSelect],
-    [checkbox,   helperCheckbox],
-    [radio,      helperRadio],
-    [file,       helperFile],
-    [hidden,     helperHidden],
-    [password,   helperPassword],
-    [textarea,   helperTextarea],
-    // Form validation helpers
-    [label+validationSufffix,    helperLabelValidation],
-    [input+validationSufffix,    helperInputValidation],
-    [select+validationSufffix,   helperSelectValidation],
-    [checkbox+validationSufffix, helperCheckboxValidation],
-    [radio+validationSufffix,    helperRadioValidation],
-    [file+validationSufffix,     helperFileValidation],
-    [password+validationSufffix, helperPasswordValidation],
-    [textarea+validationSufffix, helperTextareaValidation],
-    [field_errors,               helperFieldErrors]
-  ]);
+  // Set/get the helpers namespace
+  function namespace(setGetNs) {
+    if (setGetNs === undefined) {
+      return ns;
+    }
+    ns = setGetNs + (setGetNs ? '-' : '');
+  }
+
+  // Register all helpers
+  function register() {
+    registerHelpers([
+      // Form helpers
+      [form,       helperForm],
+      [input,      helperInput],
+      [label,      helperLabel],
+      [button,     helperButton],
+      [submit,     helperSubmit],
+      [select,     helperSelect],
+      [checkbox,   helperCheckbox],
+      [radio,      helperRadio],
+      [file,       helperFile],
+      [hidden,     helperHidden],
+      [password,   helperPassword],
+      [textarea,   helperTextarea],
+      // Form validation helpers
+      [label+validationSufffix,    helperLabelValidation],
+      [input+validationSufffix,    helperInputValidation],
+      [select+validationSufffix,   helperSelectValidation],
+      [checkbox+validationSufffix, helperCheckboxValidation],
+      [radio+validationSufffix,    helperRadioValidation],
+      [file+validationSufffix,     helperFileValidation],
+      [password+validationSufffix, helperPasswordValidation],
+      [textarea+validationSufffix, helperTextareaValidation],
+      [field_errors,               helperFieldErrors]
+    ]);
+  }
+
+  // public API
+  return {
+    namespace: namespace,
+    register: register
+  };
 }));

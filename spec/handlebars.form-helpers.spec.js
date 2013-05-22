@@ -4,6 +4,32 @@ describe('Handlebars form helpers', function() {
     expect(typeof Handlebars).not.toBe('undefined');
   });
 
+  describe('Public API', function() {
+
+    it('Has \'register\' and \'namespace\' methods', function() {
+      expect(typeof Handlebars.formHelpers).toBe('object');
+      expect(typeof Handlebars.formHelpers.register).toBe('function');
+      expect(typeof Handlebars.formHelpers.namespace).toBe('function');
+    });
+
+    it('Sets or gets the namespace', function() {
+      Handlebars.formHelpers.namespace('test');
+      expect(Handlebars.formHelpers.namespace()).toBe('test-');
+    });
+
+    it('Registers the form helpers with the namespace', function() {
+
+      // Reset the namespace after running this test
+      this.after(function() {
+        Handlebars.formHelpers.namespace('');
+        Handlebars.formHelpers.register();
+      });
+
+      Handlebars.formHelpers.register();
+      expect(typeof Handlebars.helpers['test-form']).not.toBe('undefined');
+    });
+  });
+
   describe('Form', function() {
 
     it('Generates the form tag with the URL as action and contents wrapped', function() {
