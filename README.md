@@ -3,18 +3,16 @@
 [![Build Status](https://travis-ci.org/badsyntax/handlebars-form-helpers.png?branch=master)](https://travis-ci.org/badsyntax/handlebars-form-helpers)
 [![Dependency Status](https://gemnasium.com/badsyntax/handlebars-form-helpers.png)](https://gemnasium.com/badsyntax/handlebars-form-helpers)
 
-
-This library provides extra handlebars helpers that can help with building forms. 
-
-Construction of forms can sometimes be tricky and usually there's logic involved. 
-These helpers provide the logic for building forms and handling validation errors. 
+This library provides handlebars helpers that help with building forms and handling validation errors. 
 
 ## Installation
 
 ### Browser
 
-Simply ensure you load the form helpers after you have loaded handlebars:
+Either [download](https://raw.github.com/badsyntax/handlebars-form-helpers/master/dist/handlebars.form-helpers.min.js) the 
+script, or install with [bower](http://bower.io/): `bower install handlebars-form-helpers`
 
+Load the scripts into your page, ensure you load the form helpers after handlebars:
 ```html
 <script src="handlebars.js"></script>
 <script src="handlebars.form-helpers.js"></script>
@@ -43,6 +41,11 @@ define(['handlebars', 'handlebars.form-helpers'], function(handlebars, handlebar
 ```
 
 ## Usage
+
+You need to register the helpers before you can start using them, eg:
+```javascript
+Handlebars.formHelpers.register();
+```
 
 ### Common form helpers
 
