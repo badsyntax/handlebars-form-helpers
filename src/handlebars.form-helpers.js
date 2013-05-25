@@ -4,27 +4,30 @@
  * Copyright (c) 2013 Richard Willis; Licensed MIT
  */
 
-(function (factory) {
+(function (window, factory) {
   if (typeof exports === 'object') {
     // Node/CommonJS
-    exports = module.exports = factory;
+    exports = module.exports = factory();
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(function() {
-      return factory;
-    });
+    define(factory);
   } else {
     // Browser globals
-    Handlebars.formHelpers = factory(Handlebars);
+    window.HandlebarsFormHelpers = factory();
   }
-}(function(Handlebars) {
+}(this, function factory() {
 
-  /* Common vars
+  /* Global vars
   *****************************************/
-  var ns = '', form = 'form', input = 'input', label = 'label',
+  var Handlebars, ns = '',
+
+    // Form strings
+    form = 'form', input = 'input', label = 'label',
     button = 'button', submit = 'submit', select = 'select', option = 'option',
     checkbox = 'checkbox', radio = 'radio', hidden = 'hidden',
     textarea = 'textarea', password = 'password', file = 'file',
+
+    // Validation strings
     validationErrorClass = 'validation-error', validationSufffix = '_validation',
     field_errors = 'field_errors';
 
@@ -316,10 +319,14 @@
       return ns;
     }
     ns = setGetNs + (setGetNs ? '-' : '');
+    return this;
   }
 
   // Register all helpers
-  function register() {
+  function register(HandlebarsSrc) {
+
+    Handlebars = HandlebarsSrc;
+
     registerHelpers([
       // Form helpers
       [form,       helperForm],

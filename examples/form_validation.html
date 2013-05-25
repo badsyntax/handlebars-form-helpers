@@ -185,7 +185,7 @@
             compile: function() {
 
                 // Register the form helpers
-                Handlebars.formHelpers.register();
+                HandlebarsFormHelpers.register(Handlebars);
 
                 // Pre-compile the template
                 this.source = $('#form-template').html();
