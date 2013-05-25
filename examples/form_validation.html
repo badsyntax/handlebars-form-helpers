@@ -82,7 +82,7 @@
             <div class="control-group">
                 {{label_validation 'food' 'Your favourite food' errors class="control-label"}}
                 <div class="controls">
-                    {{select_validation 'food' foods person.food errors}}
+                    {{select_validation 'food' foods person.food errors multiple="multiple"}}
                     {{field_errors 'title' errors class="help-block text-error"}}
                 </div>
             </div>
@@ -99,11 +99,11 @@
                 {{label_validation '' "Do you like cats?" errors class="control-label"}}
                 <div class="controls">
                     {{#label}}
-                        {{radio_validation 'likes_cats' 'yes' person.likesCats errors}}
+                        {{radio_validation 'likes_cats' 'yes' person.likes_cats errors}}
                         Yes
                     {{/label}}
                     {{#label}}
-                        {{radio_validation 'likes_cats' 'no' person.likesCats errors}}
+                        {{radio_validation 'likes_cats' 'no' person.likes_cats errors}}
                         No
                     {{/label}}
                     {{field_errors 'likes_cats' errors class="help-block text-error"}}
@@ -132,106 +132,101 @@
     </script>
 
     <script>
-    (function() {
-        function Validator(a){this.data=a,this.rules=[]}var Valid=function(){return{notEmpty:function(a){return-1===$.inArray(a,[null,!1,"",[]])},isEmail:function(a){return/^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test(a)}}}();Validator.prototype.rule=function(a,b,c){("string"!=typeof b||(b=Valid[b],void 0!==b))&&this.rules.push({key:a,func:b,message:c})},Validator.prototype.check=function(){var a={};return this.rules.forEach(function(b){var c=b.func(this.data[b.key]);c||void 0!==a[b.key]||(a[b.key]=b.message)}.bind(this)),0!==Object.keys(a).length?a:null};
+    (function(window, $, Handlebars) {
 
-        // Register the form helpers
-        Handlebars.formHelpers.register();
+        // Custom Validator
+        (function(a){function c(a){this.data=a||{},this.rules=[]}var b=function(){return{notEmpty:function(a){return-1===[null,!1,""].indexOf(a)},isEmail:function(a){return/^([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x22([^\x0d\x22\x5c\x80-\xff]|\x5c[\x00-\x7f])*\x22))*\x40([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d)(\x2e([^\x00-\x20\x22\x28\x29\x2c\x2e\x3a-\x3c\x3e\x40\x5b-\x5d\x7f-\xff]+|\x5b([^\x0d\x5b-\x5d\x80-\xff]|\x5c[\x00-\x7f])*\x5d))*$/.test(a)}}}();c.prototype.rule=function(a,c,d){("string"!=typeof c||(c=b[c],void 0!==c))&&"function"==typeof c&&this.rules.push({key:a,tester:c,message:d||"invalid"})},c.prototype.check=function(){var a={};return this.rules.forEach(function(b){var c=b.tester(this.data[b.key]);c||void 0!==a[b.key]||(a[b.key]=b.message)}.bind(this)),0!==Object.keys(a).length?a:null},a.Validator=c})("object"==typeof exports?exports:window);
 
-        // An example person model which we'll validate against
-        var personModel =  {
-            name: '',
-            surname: '',
-            email: '',
-            title: 'mr',
-            employed: false,
-            profilePic: '',
-            food: ['pasta'],
-            bio: ''
-        };
+        // Convert form data to JSON
+        $.fn.serializeObject=function(){var a={},b=this.serializeArray();return $.each(b,function(){void 0!==a[this.name]?(a[this.name].push||(a[this.name]=[a[this.name]]),a[this.name].push(this.value||"")):a[this.name]=this.value||""}),a};
 
-        // A list of titles
-        var titles = [{
-            value: 'mrs',
-            text: 'Mrs'
-        }, {
-            value: 'mr',
-            text: 'Mr'
-        }];
-
-        // A list of foods
-        var foods = [{
-            value: 'pasta',
-            text: 'Pasta'
-        }, {
-            value: 'fruit',
-            text: 'Fruit'
-        }];
-
-        // Template data
-        var templateData = {
+        var formData = {
+            // An example person model which we'll use to populate the form
+            // fields and validate against.
+            person: {
+                name: '',
+                surname: '',
+                email: '',
+                title: 'mr',
+                employed: 'yes',
+                profilePic: '',
+                food: ['pasta'],
+                likes_cats: 'yes',
+                bio: ''
+            },
             errors: false,
-            titles: titles,
-            foods: foods,
-            person: personModel,
-            submitted: false
+            submitted: false,
+            titles: [{
+                value: 'mrs',
+                text: 'Mrs'
+            }, {
+                value: 'mr',
+                text: 'Mr'
+            }],
+            foods: [{
+                value: 'pasta',
+                text: 'Pasta'
+            }, {
+                value: 'fruit',
+                text: 'Fruit'
+            }]
         };
 
-        // Pre-compile the template
-        var source = $('#form-template').html();
-        var template = Handlebars.compile(source);
+        var Form = {
+            init: function() {
+                this.data = formData;
+                this.compile();
+                this.render();
+                this.bindEvents();
+            },
+            bindEvents: function() {
+                $('#form-container').on('submit', $.proxy(this.onFormSubmit, this));
+            },
+            compile: function() {
 
-        // Render the template in the DOM
-        function renderTemplate() {
-            $('#form-container').html(template(templateData));
-        }
+                // Register the form helpers
+                Handlebars.formHelpers.register();
 
-        function validate(data) {
-            var validator = new Validator(data);
-            validator.rule('name', 'notEmpty', 'Name must not be empty');
-            validator.rule('surname', 'notEmpty', 'Surname must not be empty');
-            validator.rule('email', 'notEmpty', 'Email must not be empty');
-            validator.rule('email', 'isEmail', 'Email must be a valid email');
-            validator.rule('message', 'notEmpty', 'Message must not be empty');
-            validator.rule('bio', 'notEmpty', 'Bio must not be empty');
-            templateData.errors = validator.check();
-        }
+                // Pre-compile the template
+                this.source = $('#form-template').html();
+                this.template = Handlebars.compile(this.source);
+            },
+            render: function() {
+                $('#form-container').html(this.template(this.data));
+            },
+            validate: function(data) {
 
-        function onFormSubmit(e) {
+                var validator = new Validator(data);
 
-            e.preventDefault();
-            templateData.submitted = true;
+                validator.rule('name', 'notEmpty', 'Name must not be empty');
+                validator.rule('surname', 'notEmpty', 'Surname must not be empty');
+                validator.rule('email', 'notEmpty', 'Email must not be empty');
+                validator.rule('email', 'isEmail', 'Email must be a valid email');
+                validator.rule('message', 'notEmpty', 'Message must not be empty');
+                validator.rule('bio', 'notEmpty', 'Bio must not be empty');
 
-            // Update the model with form data
-            var multiple = [];
-            $.each($(e.target).serializeArray(), function(i, field) {
-                // This field has multiple values, store them in an array
-                if (personModel[this.name] instanceof Array) {
-                    if ($.inArray(this.name, multiple) === -1) {
-                        multiple.push(this.name);
-                        personModel[this.name] = [];
-                    }
-                    personModel[this.name].push(this.value);
-                } else {
-                    personModel[this.name] = this.value;
-                }
-            });
+                this.data.errors = validator.check();
+            },
+            onFormSubmit: function(e) {
 
-            // Validate the model
-            validate(personModel);
+                e.preventDefault();
+                this.data.submitted = true;
 
-            // Re-render the template
-            renderTemplate();
+                // Update the person model with user input data
+                this.data.person = $(e.target).serializeObject();
 
-            $(window).scrollTop(0);
-        }
+                // Validate the model
+                this.validate(this.data.person);
 
-        // Render the template on page load
-        renderTemplate();
+                // Re-render the template
+                this.render();
 
-        // Validate and re-render on form submit
-        $('#form-container').on('submit', onFormSubmit);
-    }());
+                $(window).scrollTop(0);
+                $('.validation-error:first').focus();
+            }
+        };
+        Form.init();
+    }(this, jQuery, Handlebars));
     </script>
 </body>
 </html>
