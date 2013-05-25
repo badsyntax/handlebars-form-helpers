@@ -271,7 +271,7 @@ describe('Handlebars form helpers', function() {
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<input name="food[]" type="checkbox" value="apples" checked="true" /><input name="food[]" type="checkbox" value="pears" />');
+      expect(html).toBe('<input name="food[]" type="checkbox" value="apples" checked="checked" /><input name="food[]" type="checkbox" value="pears" />');
     });
 
     it('Generates the checkbox tag with an id attribute if the name does not contain the multiple character sequence', function() {
@@ -281,7 +281,7 @@ describe('Handlebars form helpers', function() {
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<input name="food" type="checkbox" value="apples" checked="true" id="food" />');
+      expect(html).toBe('<input name="food" type="checkbox" value="apples" checked="checked" id="food" />');
     });
 
     it('Adds validation error classes', function() {
@@ -310,7 +310,7 @@ describe('Handlebars form helpers', function() {
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<input name="likes_cats" type="radio" value="1" checked="true" /><input name="likes_cats" type="radio" value="0" />');
+      expect(html).toBe('<input name="likes_cats" type="radio" value="1" checked="checked" /><input name="likes_cats" type="radio" value="0" />');
     });
 
     it('Adds validation error classes', function() {
@@ -326,7 +326,7 @@ describe('Handlebars form helpers', function() {
       var template = Handlebars.compile(source);
       var html = template(data);
 
-      expect(html).toBe('<input name="title" type="radio" value="1" class="validation-error" /><input name="title" type="radio" value="0" checked="true" class="validation-error" />');
+      expect(html).toBe('<input name="title" type="radio" value="1" class="validation-error" /><input name="title" type="radio" value="0" checked="checked" class="validation-error" />');
     });
   });
 
