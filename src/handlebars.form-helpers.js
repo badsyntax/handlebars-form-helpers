@@ -55,11 +55,7 @@
    *****************************************/
 
   function extend(obj1, obj2) {
-    for (var prop in obj2) {
-      if (obj2.hasOwnProperty(prop)) {
-        obj1[prop] = obj2[prop];
-      }
-    }
+    Handlebars.Utils.extend(obj1, obj2);
     return obj1;
   }
 
@@ -116,7 +112,7 @@
   function helperLabel(input, body, options) {
 
     options = Array.prototype.pop.call(arguments);
-    body = options.fn && options.fn(input) || body;
+    body = options.fn && options.fn(this) || body;
 
     var attr = {};
     if (typeof input === 'string') {
@@ -201,8 +197,8 @@
       type: checkbox,
       value: value
     };
-    if (checked) {
-      attr.checked = checked;
+    if (checked === true || checked === value) {
+      attr.checked = 'checked';
     }
     // Don't add an id attribute if the name uses the multiple character sequence, eg: 'food[]'
     if (!/\[\]/.test(name)) {
