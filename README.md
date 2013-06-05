@@ -220,10 +220,25 @@ Examples:
 
 ### Form validation helpers
 
-Validation helpers work in a similar way to the common form helpers, but expect an additional argument
-to be passed in. This additional argument must be an object, and should contain error messages for the fields.
+Validation helpers work in a similar way to the common form helpers, but handle displaying of validation errors and 
+field error styling. The validation helpers expect an additional argument to be passed in, which is an object containing
+key value pairs of errors, for example:
 
-If the field name exists as a key in the errors, an error class name of 'validation-error' will be added.
+```javascript
+var data = {
+  errors: {
+    name: 'Please enter a name'
+  }
+};
+var source = '{{input_validation "name" "" errors}}' +
+    '{{field_errors "name" errors class="help-block text-error"}}';
+var template = Handlebars.compile(source);
+var html = template(data);
+
+// Compiled HTML will be:
+// <input name="name" id="name" type="text" class="validation-error" />
+// <span class="help-block text-error">Please enter a name</span>');
+```
 
 ```
 {{input_validation "firstname" person.name errors}}
@@ -246,4 +261,9 @@ The following helpers can be used to display field errors:
 
 ## Demo
 
-A demo is currently being developed and will be available soon.
+A demo is currently being developed and will be available online soon. In the meantime, if you want to see a 'real world' example
+of how you can use this library, follow these steps to view the included example:
+
+1. Clone the repository
+2. Install the client-side dependencies with bower: `bower install`
+3. Open up `examples/form_validation.html' in your browser.
