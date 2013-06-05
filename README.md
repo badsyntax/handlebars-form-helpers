@@ -266,4 +266,4 @@ of how you can use this library, follow these steps to view the included example
 
 1. Clone the repository
 2. Install the client-side dependencies with bower: `bower install`
-3. Open up `examples/form_validation.html' in your browser.
+3. Open up `examples/form_validation.html` in your browser.
