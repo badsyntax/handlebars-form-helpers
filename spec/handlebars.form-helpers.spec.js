@@ -1,5 +1,5 @@
 describe('Handlebars form helpers', function() {
-  
+
   /** @TODO field_errors */
 
   describe('Public API', function() {
@@ -10,14 +10,15 @@ describe('Handlebars form helpers', function() {
       expect(typeof HandlebarsFormHelpers.namespace).toBe('function');
     });
 
-    it('Has \'helpers\' object and it contains all the helpers', function() {
+    it('Exposes the form helper functions', function() {
+
       expect(typeof HandlebarsFormHelpers.helpers).toBe('object');
 
       var helpers = [
         'form', 'input', 'label', 'button', 'submit', 'select',
         'checkbox', 'radio', 'file', 'hidden', 'password', 'textarea',
-        'label_validation', 'input_validation', 'select_validation', 
-        'checkbox_validation', 'radio_validation', 'file_validation', 
+        'label_validation', 'input_validation', 'select_validation',
+        'checkbox_validation', 'radio_validation', 'file_validation',
         'password_validation', 'textarea_validation', 'field_errors'
       ];
 
@@ -26,21 +27,52 @@ describe('Handlebars form helpers', function() {
       }
     });
 
+    it('Sets or gets the config', function() {
+
+      var config = JSON.parse(JSON.stringify(HandlebarsFormHelpers.config()));
+
+      HandlebarsFormHelpers.config({ validationErrorClass: 'bar' });
+
+      expect(HandlebarsFormHelpers.config()).toEqual({
+        validationErrorClass: 'bar'
+      });
+
+      // Reset config
+      HandlebarsFormHelpers.config(config);
+    });
+
     it('Sets or gets the namespace', function() {
       HandlebarsFormHelpers.namespace('test');
       expect(HandlebarsFormHelpers.namespace()).toBe('test-');
+      // Reset namespace
+      HandlebarsFormHelpers.namespace('');
     });
 
     it('Registers the form helpers with the namespace', function() {
 
-      // Reset the namespace after running this test
-      this.after(function() {
-        HandlebarsFormHelpers.namespace('');
-        HandlebarsFormHelpers.register(Handlebars);
+      HandlebarsFormHelpers.namespace('test');
+      HandlebarsFormHelpers.register(Handlebars);
+
+      expect(typeof Handlebars.helpers['test-form']).not.toBe('undefined');
+
+      // Reset namespace
+      HandlebarsFormHelpers.namespace('');
+    });
+
+    it('Registers the form helpers with custom config', function() {
+
+      var config = JSON.parse(JSON.stringify(HandlebarsFormHelpers.config()));
+
+      HandlebarsFormHelpers.register(Handlebars, {
+        validationErrorClass: 'test123'
       });
 
-      HandlebarsFormHelpers.register(Handlebars);
-      expect(typeof Handlebars.helpers['test-form']).not.toBe('undefined');
+      expect(HandlebarsFormHelpers.config()).toEqual({
+        validationErrorClass: 'test123'
+      });
+
+      // Reset config
+      HandlebarsFormHelpers.config(config);
     });
   });
 

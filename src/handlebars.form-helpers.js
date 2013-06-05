@@ -21,15 +21,45 @@
   *****************************************/
   var Handlebars, namespace = '',
 
+    // Configurable options
+    config = {
+      validationErrorClass: 'validation-error'
+    },
+
     // Form strings
     form = 'form', input = 'input', label = 'label',
     button = 'button', submit = 'submit', select = 'select', option = 'option',
     checkbox = 'checkbox', radio = 'radio', hidden = 'hidden',
     textarea = 'textarea', password = 'password', file = 'file',
 
-    // Validation strings
-    validationErrorClass = 'validation-error', validationSufffix = '_validation',
-    field_errors = 'field_errors';
+    // All helpers
+    helpers = {
+
+      // Form helpers
+      form: helperForm,
+      input: helperInput,
+      label: helperLabel,
+      button: helperButton,
+      submit: helperSubmit,
+      select: helperSelect,
+      checkbox: helperCheckbox,
+      radio: helperRadio,
+      file: helperFile,
+      hidden: helperHidden,
+      password: helperPassword,
+      textarea: helperTextarea,
+
+      // Form validation helpers
+      label_validation: helperLabelValidation,
+      input_validation: helperInputValidation,
+      select_validation: helperSelectValidation,
+      checkbox_validation: helperCheckboxValidation,
+      radio_validation: helperRadioValidation,
+      file_validation: helperFileValidation,
+      password_validation: helperPasswordValidation,
+      textarea_validation: helperTextareaValidation,
+      field_errors: helperFieldErrors
+    };
 
   /* Markup helpers
   *****************************************/
@@ -58,7 +88,9 @@
    *****************************************/
 
   function extend(obj1, obj2) {
-    Handlebars.Utils.extend(obj1, obj2);
+    for(var key in obj2) {
+      obj1[key] = obj2[key];
+    }
     return obj1;
   }
 
@@ -79,7 +111,7 @@
     options = options || {};
     if (errors === true || hasValidationError(value, errors)) {
       var hash = options.hash;
-      hash['class'] = (hash['class'] ? hash['class'] + ' ' : '') + validationErrorClass;
+      hash['class'] = (hash['class'] ? hash['class'] + ' ' : '') + config.validationErrorClass;
     }
     return options;
   }
@@ -306,65 +338,41 @@
     return new Handlebars.SafeString(err);
   }
 
-  // Register an array of handlebars helpers
-  function registerHelpers(helpers) {
-    for(var i = 0, j = helpers.length; i < j; i++) {
-      Handlebars.registerHelper(namespace + helpers[i][0], helpers[i][1]);
-    }
-  }
-
   // Set/get the helpers namespace
   function setGetNamespace(ns) {
     if (ns === undefined) {
       return namespace;
     }
     namespace = ns + (ns ? '-' : '');
-    return this;
   }
 
-  // Register all helpers
-  var allHelpers = [
-    // Form helpers
-    [form,       helperForm],
-    [input,      helperInput],
-    [label,      helperLabel],
-    [button,     helperButton],
-    [submit,     helperSubmit],
-    [select,     helperSelect],
-    [checkbox,   helperCheckbox],
-    [radio,      helperRadio],
-    [file,       helperFile],
-    [hidden,     helperHidden],
-    [password,   helperPassword],
-    [textarea,   helperTextarea],
-    // Form validation helpers
-    [label+validationSufffix,    helperLabelValidation],
-    [input+validationSufffix,    helperInputValidation],
-    [select+validationSufffix,   helperSelectValidation],
-    [checkbox+validationSufffix, helperCheckboxValidation],
-    [radio+validationSufffix,    helperRadioValidation],
-    [file+validationSufffix,     helperFileValidation],
-    [password+validationSufffix, helperPasswordValidation],
-    [textarea+validationSufffix, helperTextareaValidation],
-    [field_errors,               helperFieldErrors]
-  ];
+  // Set/get the config
+  function setGetConfig(customConfig) {
+    if (customConfig === undefined) {
+      return config;
+    }
+    extend(config, customConfig);
+  }
 
-  function register(HandlebarsSrc) {
+  function register(HandlebarsSrc, customConfig) {
+
+    // Set the handlebars reference
     Handlebars = HandlebarsSrc;
-    registerHelpers(allHelpers);
+
+    // Set the custom config
+    setGetConfig(customConfig);
+
+    // Register the helpers
+    for(var name in helpers) {
+      Handlebars.registerHelper(namespace + name, helpers[name]);
+    }
   }
 
   // public API
   return {
-
     namespace: setGetNamespace,
+    config: setGetConfig,
     register: register,
-
-    // Export all helpers for inheritance purpose
-    helpers: (function () {
-      var helpers = {};
-      for (var i = 0, l = allHelpers.length; i < l; i++) helpers[allHelpers[i][0]] = allHelpers[i][1];
-      return helpers;
-    })()
+    helpers: helpers
   };
 }));
