@@ -8,6 +8,22 @@ describe('Handlebars form helpers', function() {
       expect(typeof HandlebarsFormHelpers.namespace).toBe('function');
     });
 
+    it('Has \'helpers\' object and it contains all the helpers', function() {
+      expect(typeof HandlebarsFormHelpers.helpers).toBe('object');
+
+      var helpers = [
+        'form', 'input', 'label', 'button', 'submit', 'select',
+        'checkbox', 'radio', 'file', 'hidden', 'password', 'textarea',
+        'label_validation', 'input_validation', 'select_validation', 
+        'checkbox_validation', 'radio_validation', 'file_validation', 
+        'password_validation', 'textarea_validation', 'field_errors'
+      ];
+
+      for (var i = 0, l = helpers.length; i < l; i++) {
+        expect(typeof HandlebarsFormHelpers.helpers[helpers[i]]).toBe('function');
+      }
+    });
+
     it('Sets or gets the namespace', function() {
       HandlebarsFormHelpers.namespace('test');
       expect(HandlebarsFormHelpers.namespace()).toBe('test-');
