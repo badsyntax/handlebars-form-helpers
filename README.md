@@ -261,9 +261,18 @@ The following helpers can be used to display field errors:
 
 ## Demo
 
-A demo is currently being developed and will be available online soon. In the meantime, if you want to see a 'real world' example
-of how you can use this library, follow these steps to view the included example:
+View a demo here: https://github.com/badsyntax/handlebars-form-helpers
 
-1. Clone the repository
-2. Install the client-side dependencies with bower: `bower install`
-3. Open up `examples/form_validation.html` in your browser.
+
+## Contributing
+
+Feel free to send pull requests if you think the code can be improved in any way.
+
+### Running the tests
+
+This project uses [jasmine](http://pivotal.github.io/jasmine/) for testing. If you want to run the tests, you'll need to have 
+[nodejs](http://nodejs.org/) and 
+[grunt-cli](https://github.com/gruntjs/grunt-cli) installed. You'll also need to install the local
+node module dependencies by running `npm install` in the project root.
+
+Once everything is installed, you can run the tests by either running `npm test` or `grunt test`.
