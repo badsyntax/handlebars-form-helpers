@@ -261,7 +261,7 @@ The following helpers can be used to display field errors:
 
 ## Demo
 
-View a demo here: https://github.com/badsyntax/handlebars-form-helpers
+View a demo here: http://badsyntax.github.io/handlebars-form-helpers/
 
 
 ## Contributing
