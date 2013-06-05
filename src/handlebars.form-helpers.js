@@ -323,40 +323,47 @@
   }
 
   // Register all helpers
+  var allHelpers = [
+    // Form helpers
+    [form,       helperForm],
+    [input,      helperInput],
+    [label,      helperLabel],
+    [button,     helperButton],
+    [submit,     helperSubmit],
+    [select,     helperSelect],
+    [checkbox,   helperCheckbox],
+    [radio,      helperRadio],
+    [file,       helperFile],
+    [hidden,     helperHidden],
+    [password,   helperPassword],
+    [textarea,   helperTextarea],
+    // Form validation helpers
+    [label+validationSufffix,    helperLabelValidation],
+    [input+validationSufffix,    helperInputValidation],
+    [select+validationSufffix,   helperSelectValidation],
+    [checkbox+validationSufffix, helperCheckboxValidation],
+    [radio+validationSufffix,    helperRadioValidation],
+    [file+validationSufffix,     helperFileValidation],
+    [password+validationSufffix, helperPasswordValidation],
+    [textarea+validationSufffix, helperTextareaValidation],
+    [field_errors,               helperFieldErrors]
+  ];
+
   function register(HandlebarsSrc) {
-
     Handlebars = HandlebarsSrc;
-
-    registerHelpers([
-      // Form helpers
-      [form,       helperForm],
-      [input,      helperInput],
-      [label,      helperLabel],
-      [button,     helperButton],
-      [submit,     helperSubmit],
-      [select,     helperSelect],
-      [checkbox,   helperCheckbox],
-      [radio,      helperRadio],
-      [file,       helperFile],
-      [hidden,     helperHidden],
-      [password,   helperPassword],
-      [textarea,   helperTextarea],
-      // Form validation helpers
-      [label+validationSufffix,    helperLabelValidation],
-      [input+validationSufffix,    helperInputValidation],
-      [select+validationSufffix,   helperSelectValidation],
-      [checkbox+validationSufffix, helperCheckboxValidation],
-      [radio+validationSufffix,    helperRadioValidation],
-      [file+validationSufffix,     helperFileValidation],
-      [password+validationSufffix, helperPasswordValidation],
-      [textarea+validationSufffix, helperTextareaValidation],
-      [field_errors,               helperFieldErrors]
-    ]);
+    registerHelpers(allHelpers);
   }
 
   // public API
   return {
     namespace: namespace,
-    register: register
+    register: register,
+
+    // Export all helpers for inheritance purpose
+    helpers: (function () {
+      var helpers = {};
+      for (var i = 0, l = allHelpers.length; i < l; i++) helpers[allHelpers[i][0]] = allHelpers[i][1];
+      return helpers;
+    })()
   };
 }));
