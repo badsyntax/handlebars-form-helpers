@@ -7,7 +7,7 @@
 (function (window, factory) {
   if (typeof exports === 'object') {
     // Node/CommonJS
-    exports = module.exports = factory();
+    exports = factory();
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(factory);
@@ -19,7 +19,7 @@
 
   /* Global vars
   *****************************************/
-  var Handlebars, ns = '',
+  var Handlebars, namespace = '',
 
     // Form strings
     form = 'form', input = 'input', label = 'label',
@@ -309,16 +309,16 @@
   // Register an array of handlebars helpers
   function registerHelpers(helpers) {
     for(var i = 0, j = helpers.length; i < j; i++) {
-      Handlebars.registerHelper(ns + helpers[i][0], helpers[i][1]);
+      Handlebars.registerHelper(namespace + helpers[i][0], helpers[i][1]);
     }
   }
 
   // Set/get the helpers namespace
-  function namespace(setGetNs) {
-    if (setGetNs === undefined) {
-      return ns;
+  function setGetNamespace(ns) {
+    if (ns === undefined) {
+      return namespace;
     }
-    ns = setGetNs + (setGetNs ? '-' : '');
+    namespace = ns + (ns ? '-' : '');
     return this;
   }
 
@@ -356,7 +356,7 @@
 
   // public API
   return {
-    namespace: namespace,
+    namespace: setGetNamespace,
     register: register
   };
 }));
