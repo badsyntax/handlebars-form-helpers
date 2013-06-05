@@ -272,7 +272,7 @@ Feel free to send pull requests if you think the code can be improved in any way
 
 This project uses [jasmine](http://pivotal.github.io/jasmine/) for testing. If you want to run the tests, you'll need to have 
 [nodejs](http://nodejs.org/) and 
-[grunt-cli](https://github.com/gruntjs/grunt-cli) installed. You'll also need to install the local
-node module dependencies by running `npm install` in the project root.
+[grunt-cli](https://github.com/gruntjs/grunt-cli) installed. You'll also need to install the project dependencies by 
+running `npm install && bower install` in the project root.
 
 Once everything is installed, you can run the tests by either running `npm test` or `grunt test`.
