@@ -4,18 +4,22 @@
  * Copyright (c) 2013 Richard Willis; Licensed MIT
  */
 
-(function (window, factory) {
+(function (context, deps, factory) {
   if (typeof exports === 'object') {
     // Node/CommonJS
+    var _deps = [];
+    for (var i = 0, l = deps.length; i < l; i++) 
+      context[deps[i]] = require(deps[i])
     exports = module.exports = factory();
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(factory);
+    define(deps, factory);
+
   } else {
     // Browser globals
-    window.HandlebarsFormHelpers = factory();
+    context.HandlebarsFormHelpers = factory();
   }
-}(this, function factory() {
+}(this, ['handlebars'], function factory() {
 
   /* Global vars
   *****************************************/
