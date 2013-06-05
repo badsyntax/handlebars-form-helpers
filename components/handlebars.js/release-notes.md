@@ -1,8 +1,28 @@
 # Release Notes
 
 ## Development
+[Commits](https://github.com/wycats/handlebars.js/compare/v1.0.12...master)
 
-[Commits](https://github.com/wycats/handlebars.js/compare/v1.0.11...master)
+## v1.0.12 / 1.0.0 - May 31 2013
+
+- [#515](https://github.com/wycats/handlebars.js/issues/515) - Add node require extensions support ([@jjclark1982](https://github.com/jjclark1982))
+- [#517](https://github.com/wycats/handlebars.js/issues/517) - Fix amd precompiler output with directories ([@blessenm](https://github.com/blessenm))
+- [#433](https://github.com/wycats/handlebars.js/issues/433) - Add support for unicode ids
+- [#469](https://github.com/wycats/handlebars.js/issues/469) - Add support for `?` in ids
+- [#534](https://github.com/wycats/handlebars.js/issues/534) - Protect from object prototype modifications
+- [#519](https://github.com/wycats/handlebars.js/issues/519) - Fix partials with . name ([@jamesgorrie](https://github.com/jamesgorrie))
+- [#519](https://github.com/wycats/handlebars.js/issues/519) - Allow ID or strings in partial names
+- [#437](https://github.com/wycats/handlebars.js/issues/437) - Require matching brace counts in escaped expressions
+- Merge passed partials and helpers with global namespace values
+- Add support for complex ids in @data references
+- Docs updates
+
+Compatibility notes:
+- The parser is now stricter on `{{{`, requiring that the end token be `}}}`. Templates that do not
+  follow this convention should add the additional brace value.
+- Code that relies on global the namespace being muted when custom helpers or partials are passed will need to explicitly pass an `undefined` value for any helpers that should not be available.
+
+[Commits](https://github.com/wycats/handlebars.js/compare/v1.0.11...v1.0.12)
 
 ## v1.0.11 / 1.0.0-rc4 - May 13 2013
 
@@ -26,7 +46,7 @@
 - Fix `toString` handling under IE and browserify ([@tommydudebreaux](https://github.com/tommydudebreaux))
 - Add program metadata
 
-[Commits](https://github.com/wycats/handlebars.js/compare/v1.0.10...master)
+[Commits](https://github.com/wycats/handlebars.js/compare/v1.0.10...v1.0.11)
 
 ## v1.0.10 - Node - Feb 27 2013
 
@@ -53,3 +73,21 @@
 - Package browser dist in npm package
 
 [Commits](https://github.com/wycats/handlebars.js/compare/v1.0.8...1.0.0-rc.3)
+
+## Prior Versions
+
+When upgrading from the Handlebars 0.9 series, be aware that the
+signature for passing custom helpers or partials to templates has
+changed.
+
+Instead of:
+
+```js
+template(context, helpers, partials, [data])
+```
+
+Use:
+
+```js
+template(context, {helpers: helpers, partials: partials, data: data})
+```

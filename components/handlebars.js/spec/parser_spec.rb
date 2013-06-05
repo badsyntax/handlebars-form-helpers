@@ -111,7 +111,7 @@ describe "Parser" do
     end
 
     def data(id)
-      "@#{id}"
+      "@ID:#{id}"
     end
 
     def partial_name(name)
@@ -125,6 +125,10 @@ describe "Parser" do
 
   it "parses simple mustaches" do
     ast_for("{{foo}}").should == root { mustache id("foo") }
+    ast_for("{{foo?}}").should == root { mustache id("foo?") }
+    ast_for("{{foo_}}").should == root { mustache id("foo_") }
+    ast_for("{{foo-}}").should == root { mustache id("foo-") }
+    ast_for("{{foo:}}").should == root { mustache id("foo:") }
   end
 
   it "parses simple mustaches with data" do
@@ -230,7 +234,7 @@ describe "Parser" do
   end
 
   it "parses a partial with a complex name" do
-    ast_for("{{> shared/partial}}").should == root { partial partial_name("shared/partial") }
+    ast_for("{{> shared/partial?.bar}}").should == root { partial partial_name("shared/partial?.bar") }
   end
 
   it "parses a comment" do
@@ -413,21 +417,10 @@ describe "Parser" do
   end
 
   context "externally compiled AST" do
-
     it "can pass through an already-compiled AST" do
       ast_for(@context.eval('new Handlebars.AST.ProgramNode([ new Handlebars.AST.ContentNode("Hello")]);')).should == root do
         content "Hello"
       end
-    end
-
-    it "can pass through an already-compiled AST via compile/precompile" do
-      @context = Handlebars::Spec::CONTEXT
-
-      code = 'Handlebars.compile(new Handlebars.AST.ProgramNode([ new Handlebars.AST.ContentNode("Hello")]))();'
-      @context.eval(code).should == "Hello"
-
-      code = @context.eval 'Handlebars.precompile(new Handlebars.AST.ProgramNode([ new Handlebars.AST.ContentNode("Hello")]))'
-      @context.eval("(#{code})(this)").should == "Hello"
     end
   end
 end
