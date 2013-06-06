@@ -4,7 +4,7 @@
  * Copyright (c) 2013 Richard Willis; Licensed MIT
  */
 
-(function (window, factory) {
+(function (root, factory) {
   if (typeof exports === 'object') {
     // Node/CommonJS
     exports = factory();
@@ -13,7 +13,7 @@
     define(factory);
   } else {
     // Browser globals
-    window.HandlebarsFormHelpers = factory();
+    root.HandlebarsFormHelpers = factory();
   }
 }(this, function factory() {
 

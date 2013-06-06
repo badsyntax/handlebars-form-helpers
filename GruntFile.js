@@ -32,10 +32,32 @@ module.exports = function(grunt) {
       }
     },
     jasmine: {
-      src: ['src/handlebars.form-helpers.js'],
-      options: {
-        specs: 'spec/**/*.spec.js',
-        vendor: ['components/handlebars.js/dist/handlebars.js']
+      browserGlobal: {
+        src: ['src/handlebars.form-helpers.js'],
+        options: {
+          specs: 'spec/**/*.spec.js',
+          vendor: ['components/handlebars.js/dist/handlebars.js']
+        }
+      },
+      browserAMD: {
+        src: ['src/handlebars.form-helpers.js'],
+        options: {
+          specs: 'spec/**/*.spec.js',
+          template: require('grunt-template-jasmine-requirejs'),
+          templateOptions: {
+            requireConfig: {
+              baseUrl: '',
+              paths: {
+                handlebars: "components/handlebars.js/dist/handlebars"
+              },
+              shim: {
+                handlebars: {
+                  exports: "Handlebars"
+                }
+              }
+            }
+          }
+        }
       }
     }
   });
