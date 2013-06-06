@@ -349,19 +349,30 @@ var errors = {
 <textarea name="text" id="text" class="validation-error">Here is some text</textarea>
 ```
 
-The following helpers can be used to display field errors:
+**Field errors helpers**
 
+**Inline**
 ```
-{{field_errors "surname" errors class="help-block"}}
-{{#field_errors "surname" errors}}
-    <span class="help-block">{{this}}</span>
+{{field_errors "text" errors class="error"}}
+```
+```html
+<div class="error">Please enter some text</div>
+```
+**Block**
+```
+{{#field_errors "text" errors}}
+<span class="help-block">{{this}}</span>
 {{/field_errors}}
+```
+```html
+<span class="help-block">Error message 1</span>
+<span class="help-block">Error message 2</span>
 ```
 
 ## Demo
 
-View a demo here: http://badsyntax.github.io/handlebars-form-helpers/
-
+This demo shows how to use the helpers to build a form that handles validation: 
+http://badsyntax.github.io/handlebars-form-helpers/
 
 ## Contributing
 
