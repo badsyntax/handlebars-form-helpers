@@ -253,7 +253,9 @@ For example:
 ```javascript
 var data = {
   errors: {
-    name: 'Please enter a name'
+    name: [
+      'Please enter a name'
+    ]
   }
 };
 var source = '{{input_validation "name" "" errors}}' +
@@ -284,10 +286,10 @@ The errors object has to be in the following format:
 
 ```javascript
 var errors = {
-    fieldName: [
-        'Error message 1',
-        'Error message 2!'
-    ]
+  fieldName: [
+    'Error message 1',
+    'Error message 2!'
+  ]
 };
 ```
 
