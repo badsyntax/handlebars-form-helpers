@@ -316,14 +316,14 @@
             ]
           },
           person: {
-            title: 'mr'
+            title: ''
           }
         };
         var source = '{{select_validation "title" titles person.title errors}}';
         var template = Handlebars.compile(source);
         var html = template(data);
 
-        expect(html).toBe('<select id="title" name="title" class="validation-error"><option value="mr" selected="selected">Mr</option></select>');
+        expect(html).toBe('<select id="title" name="title" class="validation-error"><option value="mr">Mr</option></select>');
       });
     });
 

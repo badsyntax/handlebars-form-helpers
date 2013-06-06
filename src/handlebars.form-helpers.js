@@ -3,7 +3,6 @@
  * https://github.com/badsyntax/handlebars-form-helpers
  * Copyright (c) 2013 Richard Willis; Licensed MIT
  */
-
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) {
     // Node/CommonJS

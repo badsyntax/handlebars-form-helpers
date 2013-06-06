@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   var banner = '/**\n' +
-    ' * handlebars.form-helpers.js - build <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+    ' * handlebars.form-helpers.js - V<%= pkg.version %> - build <%= grunt.template.today("yyyy-mm-dd HH:mm:ss") %>\n' +
     ' * https://github.com/badsyntax/handlebars-form-helpers\n' +
     ' * Copyright (c) 2013 Richard Willis; Licensed MIT\n' +
     ' */\n';
