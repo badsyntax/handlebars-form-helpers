@@ -2,7 +2,7 @@
   if (typeof exports === 'object') {
     // Node/CommonJS
     factory(
-      require('handlebars-form-helpers'),
+      require('../src/handlebars.form-helpers'),
       require('handlebars')
     );
   } else if (typeof define === 'function' && define.amd) {

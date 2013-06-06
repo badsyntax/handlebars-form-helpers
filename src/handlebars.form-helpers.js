@@ -5,9 +5,9 @@
  */
 
 (function (root, factory) {
-  if (typeof exports === 'object') {
+  if (typeof module === 'object' && module.exports) {
     // Node/CommonJS
-    exports = factory();
+    module.exports = factory();
   } else if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(factory);
