@@ -6,7 +6,6 @@ module.exports = function(grunt) {
     ' * Copyright (c) 2013 Richard Willis; Licensed MIT\n' +
     ' */\n';
 
-  // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
@@ -59,6 +58,10 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+    jasmine_node: {
+      specNameMatcher: 'spec',
+      projectRoot: 'spec/'
     }
   });
 
@@ -66,10 +69,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-jasmine-node');
 
   // Register custom tasks
   grunt.registerTask('lint', ['jshint']);
-  grunt.registerTask('test', ['lint', 'jasmine']);
+  grunt.registerTask('test', ['lint', 'jasmine', 'jasmine_node']);
   grunt.registerTask('build', ['test', 'uglify']);
   grunt.registerTask('default', ['build']);
 };

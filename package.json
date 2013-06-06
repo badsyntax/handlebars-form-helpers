@@ -22,6 +22,8 @@
     "grunt-contrib-uglify": "~0.1.2rc7",
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-jasmine": "~0.3.3",
-    "grunt-template-jasmine-requirejs": "~0.1.2"
+    "grunt-template-jasmine-requirejs": "~0.1.2",
+    "grunt-jasmine-node": "~0.1.0",
+    "handlebars": "~1.0.12"
   }
 }
