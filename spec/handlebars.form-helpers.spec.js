@@ -1,3 +1,8 @@
+/**
+ * handlebars.form-helpers.spec.js
+ * https://github.com/badsyntax/handlebars-form-helpers
+ * Copyright (c) 2013 Richard Willis; Licensed MIT
+ */
 (function (root, factory) {
   if (typeof exports === 'object') {
     // Node/CommonJS
@@ -18,8 +23,6 @@
 }(this, function factory(HandlebarsFormHelpers, Handlebars) {
 
   describe('Handlebars form helpers', function() {
-
-    /** @TODO field_errors */
 
     it('Exists', function() {
         expect(HandlebarsFormHelpers).not.toBe(undefined);
@@ -490,6 +493,39 @@
         var html = template(data);
 
         expect(html).toBe('<textarea name="text" id="text" class="validation-error">Here is some text</textarea>');
+      });
+    });
+
+    describe('Field errors', function() {
+
+      it('Generates errors inline', function() {
+
+        var data = {
+          errors: {
+            text: [ 'Please enter some text' ]
+          }
+        };
+
+        var source = '{{field_errors "text" errors class="error"}}';
+        var template = Handlebars.compile(source);
+        var html = template(data);
+
+        expect(html).toBe('<div class="error">Please enter some text</div>');
+      });
+
+      it('Generates errors at block level', function() {
+
+        var data = {
+          errors: {
+            text: [ 'Please enter some text', 'Some text missing' ]
+          }
+        };
+
+        var source = '{{#field_errors "text" errors}}<span class="help-block">{{this}}</span>{{/field_errors}}';
+        var template = Handlebars.compile(source);
+        var html = template(data);
+
+        expect(String(html)).toBe('<span class="help-block">Please enter some text</span><span class="help-block">Some text missing</span>');
       });
     });
   });
