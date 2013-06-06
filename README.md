@@ -49,6 +49,23 @@ script, or install with [bower](http://bower.io/): `bower install handlebars-for
 
 ## Usage
 
+### Registering the helpers
+
+You have to register the helpers before you can use them in your templates. 
+The register method expects the Handlebars object to be passed in, and an *optional* config object, for example:
+
+```javascript
+HandlebarsFormHelpers.register(Handlebars, {
+  namespace: 'custom',
+  validationErrorClass: 'custom-validation-class'
+});
+```
+
+Once the helpers are registered, you can use the helpers in your templates, and compile your templates as you usually
+would. 
+
+### Using the helpers
+
 Most of the helpers can be used inline, for example:
 
 ```
@@ -66,12 +83,12 @@ The only block helpers are the form and field_errors helpers:
 
 By default the helpers are registered without a namespace. This gives you short and friendly helper names. 
 If you need to
-change the helpers namespace (because helper names are conflicting with template data vars), then you can use
-the `namespace()` public API method to set a custom namespace, before registering the helpers, for example:
+change the helpers namespace, you can specify a custom namespace when registering the helpers, for example:
 
 ```javascript
-HandlebarsFormHelpers.namespace('myform'); // set the namespace before registering
-HandlebarsFormHelpers.register(Handlebars);
+HandlebarsFormHelpers.register(Handlebars, {
+  namespace: 'myform'
+})
 ```
 
 Now the helpers are created with that namespace, for example:
