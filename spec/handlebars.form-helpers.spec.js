@@ -21,13 +21,15 @@
 
     /** @TODO field_errors */
 
-    describe('Public API', function() {
-
-      it('Has \'register\' and \'namespace\' methods', function() {
+    it('Exists', function() {
         expect(HandlebarsFormHelpers).not.toBe(undefined);
         expect(typeof HandlebarsFormHelpers).toBe('object');
+    });
+
+    describe('Public API', function() {
+
+      it('Has a \'register\' method', function() {
         expect(typeof HandlebarsFormHelpers.register).toBe('function');
-        expect(typeof HandlebarsFormHelpers.namespace).toBe('function');
       });
 
       it('Exposes the form helper functions', function() {
@@ -47,52 +49,18 @@
         }
       });
 
-      it('Sets or gets the config', function() {
+      it('Registers the form helpers with a custom namespace', function() {
 
-        var config = JSON.parse(JSON.stringify(HandlebarsFormHelpers.config()));
-
-        HandlebarsFormHelpers.config({ validationErrorClass: 'bar' });
-
-        expect(HandlebarsFormHelpers.config()).toEqual({
-          validationErrorClass: 'bar'
+        HandlebarsFormHelpers.register(Handlebars, {
+          namespace: 'test'
         });
-
-        // Reset config
-        HandlebarsFormHelpers.config(config);
-      });
-
-      it('Sets or gets the namespace', function() {
-        HandlebarsFormHelpers.namespace('test');
-        expect(HandlebarsFormHelpers.namespace()).toBe('test-');
-        // Reset namespace
-        HandlebarsFormHelpers.namespace('');
-      });
-
-      it('Registers the form helpers with the namespace', function() {
-
-        HandlebarsFormHelpers.namespace('test');
-        HandlebarsFormHelpers.register(Handlebars);
 
         expect(typeof Handlebars.helpers['test-form']).not.toBe('undefined');
 
         // Reset namespace
-        HandlebarsFormHelpers.namespace('');
-      });
-
-      it('Registers the form helpers with custom config', function() {
-
-        var config = JSON.parse(JSON.stringify(HandlebarsFormHelpers.config()));
-
         HandlebarsFormHelpers.register(Handlebars, {
-          validationErrorClass: 'test123'
+          namespace: ''
         });
-
-        expect(HandlebarsFormHelpers.config()).toEqual({
-          validationErrorClass: 'test123'
-        });
-
-        // Reset config
-        HandlebarsFormHelpers.config(config);
       });
     });
 
@@ -175,6 +143,34 @@
         var html = template(data);
 
         expect(html).toBe('<input name="name" id="name" type="text" class="validation-error" />');
+      });
+
+      it('Adds validation error classes with a custom class name', function() {
+
+        HandlebarsFormHelpers.register(Handlebars, {
+          validationErrorClass: 'test123'
+        });
+
+        var data = {
+          errors: {
+            name: [
+              'Please enter a name'
+            ]
+          },
+          person: {
+            name: ''
+          }
+        };
+        var source = '{{input_validation "name" person.name errors}}';
+        var template = Handlebars.compile(source);
+        var html = template(data);
+
+        expect(html).toBe('<input name="name" id="name" type="text" class="test123" />');
+
+        // Reset class
+        HandlebarsFormHelpers.register(Handlebars, {
+          validationErrorClass: 'validation-error'
+        });
       });
     });
 
@@ -301,7 +297,7 @@
         var template = Handlebars.compile(source);
         var html = template(data);
 
-        expect(html).toBe('<select id="people" name="people" multiple="true"><option value="1" selected="selected">Richard</option><option value="2">John</option></select>');
+        expect(html).toBe('<select id="people" name="people" multiple="multiple"><option value="1" selected="selected">Richard</option><option value="2">John</option></select>');
       });
 
       it('Adds validation error classes', function() {

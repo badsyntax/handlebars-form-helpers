@@ -19,18 +19,13 @@
 
   /* Global vars
   *****************************************/
-  var Handlebars, namespace = '',
+  var Handlebars,
 
     // Configurable options
     config = {
-      validationErrorClass: 'validation-error'
+      validationErrorClass: 'validation-error',
+      namespace: ''
     },
-
-    // Form strings
-    form = 'form', input = 'input', label = 'label',
-    button = 'button', submit = 'submit', select = 'select', option = 'option',
-    checkbox = 'checkbox', radio = 'radio', hidden = 'hidden',
-    textarea = 'textarea', password = 'password', file = 'file',
 
     // All helpers
     helpers = {
@@ -121,7 +116,7 @@
 
   /* {{#form url class="form"}}{{/form}} */
   function helperForm(url, options) {
-    return createElement(form, true, extend({
+    return createElement('form', true, extend({
       action: url,
       method: 'POST'
     }, options.hash), options.fn(this));
@@ -129,7 +124,7 @@
 
   /* {{input "firstname" person.name}} */
   function helperInput(name, value, options) {
-    return new Handlebars.SafeString(createElement(input, false, extend({
+    return new Handlebars.SafeString(createElement('input', false, extend({
       name: name,
       id: name,
       value: value,
@@ -154,7 +149,7 @@
       attr['for'] = input;
     }
 
-    var element = createElement(label, true, extend(attr, options.hash), body);
+    var element = createElement('label', true, extend(attr, options.hash), body);
 
     return options.fn ? element : new Handlebars.SafeString(element);
   }
@@ -166,17 +161,17 @@
 
   /* {{button "Submit form"}} */
   function helperButton(name, body, options) {
-    return new Handlebars.SafeString(createElement(button, true, extend({
+    return new Handlebars.SafeString(createElement('button', true, extend({
       name: name,
-      type: button
+      type: 'button'
     }, options.hash), body));
   }
 
   /* {{submit "Submit form"}} */
   function helperSubmit(name, body, options) {
-    return new Handlebars.SafeString(createElement(button, true, extend({
+    return new Handlebars.SafeString(createElement('button', true, extend({
       name: name,
-      type: submit
+      type: 'submit'
     }, options.hash), body));
   }
 
@@ -189,7 +184,7 @@
     // If the selected value is an array, then convert the
     // select to a multiple select
     if (selected instanceof Array) {
-      options.hash.multiple = true;
+      options.hash.multiple = 'multiple';
     }
 
     // Generate the list of options
@@ -211,10 +206,10 @@
         attr.selected = 'selected';
       }
 
-      optionsHtml += createElement(option, true, attr, items[i].text);
+      optionsHtml += createElement('option', true, attr, items[i].text);
     }
 
-    return new Handlebars.SafeString(createElement(select, true, extend({
+    return new Handlebars.SafeString(createElement('select', true, extend({
       id: name,
       name: name
     }, options.hash), optionsHtml));
@@ -229,7 +224,7 @@
   function helperCheckbox(name, value, checked, options) {
     var attr = {
       name: name,
-      type: checkbox,
+      type: 'checkbox',
       value: value
     };
     if (checked === true || checked === value) {
@@ -239,7 +234,7 @@
     if (!/\[\]/.test(name)) {
       attr.id = name;
     }
-    return new Handlebars.SafeString(createElement(input, false, extend(attr, options.hash)));
+    return new Handlebars.SafeString(createElement('input', false, extend(attr, options.hash)));
   }
 
   /* {{checkbox_validation "food[]" "apples" true errors}} */
@@ -250,7 +245,7 @@
   /* {{radio "likes_cats" "1" true}} */
   function helperRadio(name, value, checked, options) {
     extend(options.hash, {
-      type: radio,
+      type: 'radio',
       id: false
     });
     return helperCheckbox(name, value, checked, options);
@@ -263,10 +258,10 @@
 
   /* {{file "fileupload"}} */
   function helperFile(name, options) {
-    return new Handlebars.SafeString(createElement(input, false, extend({
+    return new Handlebars.SafeString(createElement('input', false, extend({
       name: name,
       id: name,
-      type: file
+      type: 'file'
     }, options.hash)));
   }
 
@@ -277,21 +272,21 @@
 
   /* {{hidden "secret" "key123"}} */
   function helperHidden(name, value, options) {
-    return new Handlebars.SafeString(createElement(input, false, extend({
+    return new Handlebars.SafeString(createElement('input', false, extend({
       name: name,
       id: name,
       value: value,
-      type: hidden
+      type: 'hidden'
     }, options.hash)));
   }
 
   /* {{password "password" "dontdothis"}} */
   function helperPassword(name, value, options) {
-    return new Handlebars.SafeString(createElement(input, false, extend({
+    return new Handlebars.SafeString(createElement('input', false, extend({
       name: name,
       id: name,
       value: value,
-      type: password
+      type: 'password'
     }, options.hash)));
   }
 
@@ -302,7 +297,7 @@
 
   /* {{textarea "text" "Here is some text"}} */
   function helperTextarea(name, body, options) {
-    return new Handlebars.SafeString(createElement(textarea, true, extend({
+    return new Handlebars.SafeString(createElement('textarea', true, extend({
       name: name,
       id: name
     }, options.hash), body));
@@ -338,40 +333,23 @@
     return new Handlebars.SafeString(err);
   }
 
-  // Set/get the helpers namespace
-  function setGetNamespace(ns) {
-    if (ns === undefined) {
-      return namespace;
-    }
-    namespace = ns + (ns ? '-' : '');
-  }
-
-  // Set/get the config
-  function setGetConfig(customConfig) {
-    if (customConfig === undefined) {
-      return config;
-    }
-    extend(config, customConfig);
-  }
-
   function register(HandlebarsSrc, customConfig) {
 
     // Set the handlebars reference
     Handlebars = HandlebarsSrc;
 
     // Set the custom config
-    setGetConfig(customConfig);
+    extend(config, customConfig);
 
     // Register the helpers
+    var namespace = config.namespace;
     for(var name in helpers) {
-      Handlebars.registerHelper(namespace + name, helpers[name]);
+      Handlebars.registerHelper((namespace ? namespace + '-' : '') + name, helpers[name]);
     }
   }
 
   // public API
   return {
-    namespace: setGetNamespace,
-    config: setGetConfig,
     register: register,
     helpers: helpers
   };
