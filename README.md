@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/badsyntax/handlebars-form-helpers.png?branch=master)](https://travis-ci.org/badsyntax/handlebars-form-helpers)
 [![Dependency Status](https://gemnasium.com/badsyntax/handlebars-form-helpers.png)](https://gemnasium.com/badsyntax/handlebars-form-helpers)
 
-This library provides handlebars helpers that help with building forms and handling validation errors.
+A library of handlebars helpers that help with building forms.
 
 ## Installation
 
@@ -63,7 +63,8 @@ The only block helpers are the form and field_errors helpers:
 {{/field_errors}}`
 ```
 
-By default the helpers are registered without a namespace. This gives you nice and friendly helper names. If you need to
+By default the helpers are registered without a namespace. This gives you short and friendly helper names. 
+If you need to
 change the helpers namespace (because helper names are conflicting with template data vars), then you can use
 the `namespace()` public API method to set a custom namespace, before registering the helpers, for example:
 
@@ -266,13 +267,13 @@ View a demo here: http://badsyntax.github.io/handlebars-form-helpers/
 
 ## Contributing
 
-Feel free to send pull requests if you think the code can be improved in any way.
+Feel free to send pull requests. 
 
 ### Running the tests
 
 This project uses [jasmine](http://pivotal.github.io/jasmine/) for testing. If you want to run the tests, you'll need to have 
-[nodejs](http://nodejs.org/) and 
-[grunt-cli](https://github.com/gruntjs/grunt-cli) installed. You'll also need to install the project dependencies by 
+[nodejs](http://nodejs.org/), [grunt-cli](https://github.com/gruntjs/grunt-cli) and [bower](http://bower.io/) installed.
+You'll also need to install the project dependencies by 
 running `npm install && bower install` in the project root.
 
 Once everything is installed, you can run the tests by either running `npm test` or `grunt test`.
