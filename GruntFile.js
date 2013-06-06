@@ -48,11 +48,11 @@ module.exports = function(grunt) {
             requireConfig: {
               baseUrl: '',
               paths: {
-                handlebars: "components/handlebars.js/dist/handlebars"
+                handlebars: 'components/handlebars.js/dist/handlebars'
               },
               shim: {
                 handlebars: {
-                  exports: "Handlebars"
+                  exports: 'Handlebars'
                 }
               }
             }
