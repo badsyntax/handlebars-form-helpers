@@ -72,18 +72,21 @@ Most of the helpers can be used inline, for example:
 {{label "name" "Please enter your name"}}
 ```
 
-The only block helpers are the form and field_errors helpers:
+The only block helpers are the form, label and field_errors helpers:
 
 ```
-{{#form "/post" class="form"}}{{/form}}
+{{#form "/post" class="form"}} ... {{/form}}
+{{#label}}
+    A field label
+{{/label}}
 {{#field_errors "surname" errors}}
     <span class="help-block">{{this}}</span>
 {{/field_errors}}`
 ```
 
 By default the helpers are registered without a namespace. This gives you short and friendly helper names. 
-If you need to
-change the helpers namespace, you can specify a custom namespace when registering the helpers, for example:
+
+If you need to change the helpers namespace, you can specify a custom namespace when registering the helpers, for example:
 
 ```javascript
 HandlebarsFormHelpers.register(Handlebars, {
@@ -114,7 +117,7 @@ Now the helpers are created with that namespace, for example:
 {{textarea "text" "Here is some text"}}
 ```
 
-Examples:
+#### Examples:
 
 **Form helper**
 ```html
@@ -240,8 +243,12 @@ Examples:
 ### Form validation helpers
 
 Validation helpers work in a similar way to the common form helpers, but handle displaying of validation errors and 
-field error styling. The validation helpers expect an additional argument to be passed in, which is an object containing
-key value pairs of errors, for example:
+field error styling. 
+
+The validation helpers expect an 'errors' object to be passed in, which is used to display the 
+validation errors for the field.
+
+For example:
 
 ```javascript
 var data = {
@@ -259,6 +266,8 @@ var html = template(data);
 // <span class="help-block text-error">Please enter a name</span>');
 ```
 
+### Validation helpers
+
 ```
 {{input_validation "firstname" person.name errors}}
 {{label_validation "name" "Please enter your name" errors}}
@@ -267,6 +276,77 @@ var html = template(data);
 {{file_validation "fileupload" errors}}
 {{password_validation "password" "dontdothis" errors}}
 {{textarea_validation "text" "Here is some text" errors}}
+```
+
+### Error data
+
+The errors object has to be in the following format:
+
+```javascript
+var errors = {
+    fieldName: [
+        'Error message 1',
+        'Error message 2!'
+    ]
+};
+```
+
+#### Examples:
+
+**Input validation helper**
+```html
+{{input_validation "name" "" errors}}
+```
+```html
+<input name="name" id="name" type="text" class="validation-error" />
+```
+
+**Label validation helper**
+```html
+{{label_validation "name" "" errors}}
+```
+```html
+<label for="name" class="validation-error">Enter your name</label>
+```
+
+**Select validation helper**
+```html
+{{select_validation "title" titles "" errors}}
+```
+```html
+<select id="title" name="title" class="validation-error"><option value="mr">Mr</option></select>
+```
+
+**Checkbox validation helper**
+```html
+{{checkbox_validation "title" 1 false errors}}
+```
+```html
+<input name="title" type="checkbox" value="1" id="title" class="validation-error" />
+```
+
+**File validation helper**
+```html
+{{file_validation "fileupload" errors}}
+```
+```html
+<input name="fileupload" id="fileupload" type="file" class="validation-error" />
+```
+
+**Password validation helper**
+```html
+{{password_validation "password" "" errors}}
+```
+```html
+<input name="password" id="password" type="password" class="validation-error" />
+```
+
+**Textarea validation helper**
+```html
+{{textarea_validation "text" "Here is some text" errors}}
+```
+```html
+<textarea name="text" id="text" class="validation-error">Here is some text</textarea>
 ```
 
 The following helpers can be used to display field errors:
