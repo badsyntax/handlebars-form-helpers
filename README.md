@@ -9,42 +9,43 @@ A library of handlebars helpers that help with building forms.
 
 ### Browser
 
-Either [download](https://raw.github.com/badsyntax/handlebars-form-helpers/master/dist/handlebars.form-helpers.min.js) the
+1. Either [download](https://raw.github.com/badsyntax/handlebars-form-helpers/master/dist/handlebars.form-helpers.min.js) the
 script, or install with [bower](http://bower.io/): `bower install handlebars-form-helpers`
+2. Load the scripts into your page. (It does not matter which order the scripts are loaded in.)
 
-Load the scripts into your page, ensure you load the form helpers after handlebars:
-```html
-<script src="handlebars.js"></script>
-<script src="handlebars.form-helpers.js"></script>
-```
-Then register the helpers:
+    ```html
+    <script src="handlebars.js"></script>
+    <script src="handlebars.form-helpers.js"></script>
+    ```
 
-```javascript
-HandlebarsFormHelpers.register(Handlebars);
-```
+3. Register the helpers:
+
+    ```javascript
+    HandlebarsFormHelpers.register(Handlebars);
+    ```
 
 ### Node/CommonJS
 
-You can install the helpers with npm: `npm install handlebars-form-helpers`
+1. You can install the helpers with npm: `npm install handlebars-form-helpers`
+2. Load in the module and register it:
 
-You need to initiate the CommonJS module manually (which allows you to define the handlebars
-dependency), as well as register the helpers:
-
-```javascript
-var hbs = require('hbs');
-require('handlebars-form-helpers').register(hbs.handlebars);
-```
+    ```javascript
+    var hbs = require('hbs');
+    require('handlebars-form-helpers').register(hbs.handlebars);
+    ```
 
 ### AMD
 
-As with the CommonJS module, you need to initiate the AMD module manually, as well as register the helpers:
+1. Either [download](https://raw.github.com/badsyntax/handlebars-form-helpers/master/dist/handlebars.form-helpers.min.js) the
+script, or install with [bower](http://bower.io/): `bower install handlebars-form-helpers`
+3. Load in the module and register it:
 
-```javascript
-define(['handlebars', 'handlebars-form-helpers'], function(handlebars, handlebarsHelpers) {
-  handlebarsHelpers.register(handlebars);
-  // ..etc
-});
-```
+  ```javascript
+  define(['handlebars', 'handlebars-form-helpers'], function(Handlebars, HandlebarsFormHelpers) {
+      HandlebarsFormHelpers.register(Handlebars);
+      // ..etc
+  });
+  ```
 
 ## Usage
 
