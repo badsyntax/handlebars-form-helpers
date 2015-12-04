@@ -6,7 +6,7 @@
     "node_modules"
   ],
   "dependencies": {
-    "handlebars.js": "~1.0.11"
+    "handlebars": "~1.0.11"
   },
   "devDependencies": {
     "bootstrap": "~2.3.1",
