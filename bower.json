@@ -1,6 +1,6 @@
 {
   "name": "handlebars-form-helpers",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "dist/handlebars.form-helpers.min.js",
   "ignore": [
     "node_modules"
