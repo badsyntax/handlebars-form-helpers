@@ -61,9 +61,10 @@
   function openTag(type, closing, attr) {
     var html = ['<' + type];
     for (var prop in attr) {
-      // A falsy value is used to remove the attribute.
+      // Previously, a falsy value was used to remove the attribute.
+      // 0's are falsy, but sometimes you want them.
       // EG: attr[false] to remove, attr['false'] to add
-      if (attr[prop]) {
+      if (attr[prop] === 0 || attr[prop]) {
         html.push(prop + '="' + attr[prop] + '"');
       }
     }
