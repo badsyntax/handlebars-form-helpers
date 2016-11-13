@@ -382,7 +382,7 @@ Feel free to send pull requests.
 
 ### Running the tests
 
-This project uses [jasmine](http://pivotal.github.io/jasmine/) for testing. If you want to run the tests, you'll need to have 
+This project uses [jasmine](https://jasmine.github.io/) for testing. If you want to run the tests, you'll need to have 
 [nodejs](http://nodejs.org/), [grunt-cli](https://github.com/gruntjs/grunt-cli) and [bower](http://bower.io/) installed.
 You'll also need to install the project dependencies by 
 running `npm install && bower install` in the project root.
