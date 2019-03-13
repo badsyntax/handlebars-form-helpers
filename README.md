@@ -1,7 +1,6 @@
 # handlebars-form-helpers
 
 [![Build Status](https://travis-ci.org/badsyntax/handlebars-form-helpers.png?branch=master)](https://travis-ci.org/badsyntax/handlebars-form-helpers)
-[![Dependency Status](https://gemnasium.com/badsyntax/handlebars-form-helpers.png)](https://gemnasium.com/badsyntax/handlebars-form-helpers)
 
 A library of handlebars helpers that help with building forms.
 
