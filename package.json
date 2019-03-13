@@ -4,7 +4,9 @@
   "homepage": "https://github.com/badsyntax/handlebars-form-helpers",
   "description": "Handlebars.js form helpers",
   "keywords": [
-    "handlebars helpers form"
+    "handlebars",
+    "helpers",
+    "form"
   ],
   "repository": {
     "type": "git",
@@ -18,12 +20,12 @@
     "test": "grunt test --verbose"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "~0.1.2rc7",
-    "grunt-contrib-jshint": "~0.1.1",
-    "grunt-contrib-jasmine": "~0.3.3",
-    "grunt-template-jasmine-requirejs": "~0.1.2",
-    "grunt-jasmine-node": "~0.1.0",
-    "handlebars": "~1.0.12"
+    "grunt": "^1.0.3",
+    "grunt-contrib-jasmine": "^2.0.3",
+    "grunt-contrib-jshint": "^2.0.0",
+    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-jasmine-node": "^0.3.1",
+    "grunt-template-jasmine-requirejs": "^0.2.3",
+    "handlebars": "^4.1.0"
   }
 }

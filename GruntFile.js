@@ -21,7 +21,8 @@ module.exports = function(grunt) {
       files: [
         '*.js',
         'src/**/*.js',
-        'spec/**/*.js'
+        'spec/**/*.js',
+        '!require.js'
       ],
       options: {
         globals: {
@@ -35,7 +36,7 @@ module.exports = function(grunt) {
         src: ['src/handlebars.form-helpers.js'],
         options: {
           specs: 'spec/**/*.spec.js',
-          vendor: ['components/handlebars.js/dist/handlebars.js']
+          vendor: ['node_modules/handlebars/dist/handlebars.js']
         }
       },
       browserAMD: {
@@ -47,7 +48,7 @@ module.exports = function(grunt) {
             requireConfig: {
               baseUrl: '',
               paths: {
-                handlebars: 'components/handlebars.js/dist/handlebars'
+                handlebars: 'node_modules/handlebars/dist/handlebars'
               },
               shim: {
                 handlebars: {

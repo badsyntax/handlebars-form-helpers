@@ -24,6 +24,12 @@
 
   describe('Handlebars form helpers', function() {
 
+    beforeEach(function() {
+      HandlebarsFormHelpers.register(Handlebars, {
+        namespace: ''
+      });
+    });
+
     it('Exists', function() {
         expect(HandlebarsFormHelpers).not.toBe(undefined);
         expect(typeof HandlebarsFormHelpers).toBe('object');
@@ -131,6 +137,7 @@
       });
 
       it('Adds validation error classes', function() {
+
         var data = {
           errors: {
             name: [
